@@ -4,6 +4,15 @@
     <loc>https://eic.github.io/eic_france_tutorial_2026/01-introduction.html</loc>
   </url>
   <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/02-simulation.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/03-eicrecon.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/04-analysis.html</loc>
+  </url>
+  <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/404.html</loc>
   </url>
   <url>
@@ -16,7 +25,13 @@
     <loc>https://eic.github.io/eic_france_tutorial_2026/aio.html</loc>
   </url>
   <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/bnl-sdcc-quickstart.html</loc>
+  </url>
+  <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/citation.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/discuss.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/images.html</loc>
@@ -26,6 +41,15 @@
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/01-introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/02-simulation.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/03-eicrecon.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/04-analysis.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/404.html</loc>
@@ -40,7 +64,13 @@
     <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/aio.html</loc>
   </url>
   <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/bnl-sdcc-quickstart.html</loc>
+  </url>
+  <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/citation.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/discuss.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/images.html</loc>
@@ -53,6 +83,9 @@
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/jlab-farm-quickstart.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/instructor/key-points.html</loc>
@@ -68,6 +101,9 @@
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/eic_france_tutorial_2026/jlab-farm-quickstart.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/eic_france_tutorial_2026/key-points.html</loc>
