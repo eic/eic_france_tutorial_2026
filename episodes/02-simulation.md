@@ -17,6 +17,7 @@ exercises: 15 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+
 ## Introduction
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
@@ -42,7 +43,10 @@ paste("This", "new", "lesson", "looks", "good")
  
 ```output
 [1] "This new lesson looks good"
+
 ```
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - Point 1
