@@ -1,18 +1,19 @@
 ---
-title: ""
+title: "Simulating ePIC Events"
 teaching: 10 # teaching time in minutes
 exercises: 2 # exercise time in minutes
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- 
+- How can we use the simulation of the ePIC detector?
+- What geometries are available?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- 
+- Process our event generator sample through the ePIC detector simulation
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
