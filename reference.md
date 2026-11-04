@@ -4,5 +4,9 @@ title: 'Reference'
 
 ## Glossary
 
-This is a placeholder file. Please add content here. 
+EIC
+:   Electron-Ion Collider
 
+eic-shell
+:   The EIC standard software environment, a singularity/apptainer or docker container with a
+    curated selection of software components used for EIC simulations and analysis.
