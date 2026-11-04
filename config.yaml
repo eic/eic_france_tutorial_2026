@@ -73,7 +73,12 @@ episodes:
 - 04-analysis.md
 
 # Information for Learners
-learners: setup.md
+learners:
+- setup.md
+- reference.md
+- bnl-sdcc-quickstart.md
+- jlab-farm-quickstart.md
+- discuss.md
 
 # Information for Instructors
 instructors: 
