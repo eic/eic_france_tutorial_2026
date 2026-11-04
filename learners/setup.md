@@ -35,6 +35,14 @@ In advance of the training session, please ensure that
        wget --output-document install.sh https://get.epic-eic.org
        bash install.sh
        ```
+::::::::::::::::::::::::::::::::::::: root
+
+It is **strongly preferred** (but not required) that you can run ROOT locally on your system. ROOT is installed within eic-shell, so you can process macros in eic-shell. However, viewing plots and files interactively in this manner not straightforward. A local install to view interactive windows is generally very helpful. 
+
+See the [CERN ROOT](https://root.cern/install/) webpage for information on installing ROOT in a variety of ways on your system if it is not already installed.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 If you have completed the numbered steps above, then you are ready for the tutorial. Additional
 information and training links are below:
