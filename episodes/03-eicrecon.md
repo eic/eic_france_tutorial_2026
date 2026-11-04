@@ -1,18 +1,20 @@
 ---
-title: ""
-teaching: 10 # teaching time in minutes
-exercises: 2 # exercise time in minutes
+title: "Reconstructing our Simulated Output"
+teaching: 15 # teaching time in minutes
+exercises: 15 # exercise time in minutes
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- 
+- What is EICrecon?
+- What does it do?
+- How do we process events through EICrecon?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- 
+- Process our simulated events through EICrecon
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
