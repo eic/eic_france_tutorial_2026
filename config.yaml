@@ -67,10 +67,13 @@ contact: 'stephen.kay@york.ac.uk' # FIXME
 
 # Order of episodes in your lesson
 episodes: 
-- introduction.md
+- 01-introduction.md
+- 02-simulation.md
+- 03-eicrecon.md
+- 04-analysis.md
 
 # Information for Learners
-learners: 
+learners: setup.md
 
 # Information for Instructors
 instructors: 
