@@ -1,18 +1,20 @@
 ---
-title: ""
-teaching: 10 # teaching time in minutes
-exercises: 2 # exercise time in minutes
+title: "Analysing Reconstructed Output"
+teaching: 15 # teaching time in minutes
+exercises: 45 # exercise time in minutes
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- 
+- How can we analyse our reconstructed output?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- 
+- Open our reconstructed output, explore the contnets
+- Identify our beam particles from the MCParticles collection
+- Identify $J\psi$ particles from their decay products in the MCParticles collection
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
