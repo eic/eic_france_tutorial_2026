@@ -28,8 +28,7 @@ In advance of the training session, please ensure that
        bash install.sh
        ```
 ::::::::::::::::::::::::::::::::::::: callout
-
-# ROOT
+### ROOT
 
 It is **strongly preferred** (but not required) that you can run ROOT locally on your system. ROOT is installed within eic-shell, so you can process macros in eic-shell. However, viewing plots and files interactively in this manner is not straightforward. A local install to view interactive windows is generally very helpful. 
 
@@ -47,8 +46,7 @@ information and training links are below:
   - HEP Software Foundation [Docker](https://hsf-training.github.io/hsf-training-docker/index.html) training (optional)
 
 ::::::::::::::::::::::::::::::::::::::::::::: callout
-
-# JLab/BNL Systems
+### JLab/BNL Systems
 
 If you are using the [BNL SDCC](bnl-sdcc-quickstart.md) or the [JLab Farm](jlab-farm-quickstart.md),
 you may find the quick start info useful if you are new to these systems. 
