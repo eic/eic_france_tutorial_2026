@@ -217,12 +217,19 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         2. Simulating ePIC Events
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#introduction">Introduction</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -354,9 +361,8 @@ simulation</li>
 </div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a></h1>
-<p>The ePIC simulation is pre-installed within <code>eic-shell</code>.
+<section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a></h2>
+<hr class="half-width"><p>The ePIC simulation is pre-installed within <code>eic-shell</code>.
 The ePIC geometry is defined in the DD4HEP (Detector Description for
 High Energy Physics) framework. More info can be found in the tutorials
 on <a href="https://eic.github.io/tutorial-geometry-development-using-dd4hep/" class="external-link">DD4HEP
@@ -364,8 +370,8 @@ to define ePIC detectors</a> and <a href="https://eic.github.io/tutorial-simulat
 npsim and Geant4</a></p>
 <p>Crucially, DD4HEP acts as a wrapper around the familiar <a href="https://geant4.web.cern.ch/" class="external-link">Geant4</a> Monte-Carlo simulation
 toolkit.</p>
-<div class="section level2">
-<h2 id="introduction---setup">Introduction - Setup<a class="anchor" aria-label="anchor" href="#introduction---setup"></a></h2>
+<div class="section level3">
+<h3 id="introduction---setup">Introduction - Setup<a class="anchor" aria-label="anchor" href="#introduction---setup"></a></h3>
 <p>To run a simulation, we need to enter <code>eic-shell</code> if we’re
 not already there:</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -411,8 +417,7 @@ things neat:</p>
 <p>Copy your generated event file from earlier into this directory too.
 We’re now ready to simulate!</p>
 </div>
-</div>
-<div class="section level1">
+</section><div class="section level1">
 <h1 id="running-simulations">Running Simulations<a class="anchor" aria-label="anchor" href="#running-simulations"></a></h1>
 <p>We will run our simulation using the <code>npsim</code> command.</p>
 <div id="npsim-vs-ddsim" class="callout">
