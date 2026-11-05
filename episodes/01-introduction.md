@@ -58,7 +58,7 @@ to get the specific container image you're using.
 
 In simulating and reconstructing EIC/ePIC data, a large range of different software packages are used. Where possible, applicable software from other HEP experiments is utilised. For example [ACTS](https://acts-project.github.io/) is used for tracking.
 
-![The ePIC Software Stack. A clickable version is available on [the eic.github.io page](https://eic.github.io/documentation/getstarted.html)](fig/ePIC_Software.png){alt="The web of ePIC software showing connections between different components. Connections to stacks from other sources are also shown. Different stacks are grouped in boxes."}
+![The ePIC Software Stack. A clickable version is available on [the eic.github.io page](https://eic.github.io/documentation/getstarted.html)](figs/ePIC_Software.png){alt="The web of ePIC software showing connections between different components. Connections to stacks from other sources are also shown. Different stacks are grouped in boxes."}
 
 Much of this software is pre-installed in eic-shell. 
 
