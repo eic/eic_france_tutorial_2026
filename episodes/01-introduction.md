@@ -15,19 +15,12 @@ exercises: 15 # exercise time in minutes
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Explore the EIC software stack
-- 
+    
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
 
 Intro...
-
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-Inline instructor notes can help inform instructors of timing challenges
-associated with the lessons. They appear in the "Instructor View"
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -36,5 +29,3 @@ associated with the lessons. They appear in the "Instructor View"
 - Point 1
   
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
-[r-markdown]: https://rmarkdown.rstudio.com/
