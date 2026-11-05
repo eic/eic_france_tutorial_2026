@@ -27,6 +27,12 @@ In advance of the training session, please ensure that
        wget --output-document install.sh https://get.epic-eic.org
        bash install.sh
        ```
+   - Depending upon how your filesystem is setup, you *may* need to specify a different temporary directory
+     - By default, a directory in `/tmp` is used
+     - Use the `-t` prefix to set a new temp directory
+        - `./install.sh -t /home/...`
+      - Setup requires ~20 GB of free space
+           
 ::::::::::::::::::::::::::::::::::::: callout
 ### ROOT
 
