@@ -17,14 +17,14 @@ exercises: 15 # exercise time in minutes
   
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-# Introduction
+## Introduction
 
 The ePIC simulation is pre-installed within `eic-shell`. The ePIC geometry is defined in the DD4HEP (Detector Description for High Energy Physics) framework. More info can be found in 
 the tutorials on [DD4HEP to define ePIC detectors ](https://eic.github.io/tutorial-geometry-development-using-dd4hep/) and [Using npsim and Geant4](https://eic.github.io/tutorial-simulations-using-npsim-and-geant4/) 
 
 Crucially, DD4HEP acts as a wrapper around the familiar [Geant4](https://geant4.web.cern.ch/) Monte-Carlo simulation toolkit. 
 
-## Introduction - Setup
+### Introduction - Setup
 
 To run a simulation, we need to enter `eic-shell` if we're not already there:
 
