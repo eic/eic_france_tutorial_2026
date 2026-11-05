@@ -27,13 +27,15 @@ In advance of the training session, please ensure that
        wget --output-document install.sh https://get.epic-eic.org
        bash install.sh
        ```
-::::::::::::::::::::::::::::::::::::: root
+::::::::::::::::::::::::::::::::::::: callout
 
-It is **strongly preferred** (but not required) that you can run ROOT locally on your system. ROOT is installed within eic-shell, so you can process macros in eic-shell. However, viewing plots and files interactively in this manner not straightforward. A local install to view interactive windows is generally very helpful. 
+# ROOT
+
+It is **strongly preferred** (but not required) that you can run ROOT locally on your system. ROOT is installed within eic-shell, so you can process macros in eic-shell. However, viewing plots and files interactively in this manner is not straightforward. A local install to view interactive windows is generally very helpful. 
 
 See the [CERN ROOT](https://root.cern/install/) webpage for information on installing ROOT in a variety of ways on your system if it is not already installed.
 
-:::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::
 
 If you have completed the numbered steps above, then you are ready for the tutorial. Additional
 information and training links are below:
@@ -44,7 +46,9 @@ information and training links are below:
   - Software Carpentry [Incubator Singularity](https://carpentries-incubator.github.io/singularity-introduction/) training (optional)
   - HEP Software Foundation [Docker](https://hsf-training.github.io/hsf-training-docker/index.html) training (optional)
 
-::::::::::::::::::::::::::::::::::::::::::::: JLab/BNL Systems
+::::::::::::::::::::::::::::::::::::::::::::: callout
+
+# JLab/BNL Systems
 
 If you are using the [BNL SDCC](bnl-sdcc-quickstart.md) or the [JLab Farm](jlab-farm-quickstart.md),
 you may find the quick start info useful if you are new to these systems. 
