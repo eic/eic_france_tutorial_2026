@@ -330,26 +330,10 @@ any links that you are not going to use.
  -->
 
 
-      <section id="setup"><div id="callout1" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div class="callout-inner">
-<div class="callout-content">
-<p>If you are using the <a href="bnl-sdcc-quickstart.html">BNL SDCC</a>
-or the <a href="jlab-farm-quickstart.html">JLab Farm</a>, you may find
-the quick start info useful if you are new to these systems.</p>
-</div>
-</div>
-</div>
-<p>In advance of the training session, please ensure that</p>
+      <section id="setup"><p>In advance of the training session, please ensure that</p>
 <ol style="list-style-type: decimal"><li>You have singularity/apptainer or docker (on Mac) installed and
 working
-<ul><li>Provided by default on BNL SDCC and the JLab iFarm, check by trying
-the command <code>singularity</code> and verify that you get an info
-dump on the usage of the command</li>
-<li>On your local system:
+<ul><li>On your local system:
 <ul><li>systems that use cvmfs or download images can install
 <strong>singularity or apptainer</strong> (see the <a href="https://apptainer.org/docs/user/main/quick_start.html" class="external-link">apptainer
 quick-start guide</a>)</li>
@@ -387,21 +371,36 @@ as <code>install.sh</code> and run this script by hand:</p>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="fu">wget</span> <span class="at">--output-document</span> install.sh https://get.epic-eic.org</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a><span class="fu">bash</span> install.sh</span></code></pre>
 </div>
-<div class="root">
-
-</div>
 </li>
 </ul></li>
+<li>Depending upon how your filesystem is setup, you <em>may</em> need
+to specify a different temporary directory
+<ul><li>By default, a directory in <code>/tmp</code> is used</li>
+<li>Use the <code>-t</code> prefix to set a new temp directory
+<ul><li><code>./install.sh -t /home/...</code></li>
 </ul></li>
-</ol><p>It is <strong>strongly preferred</strong> (but not required) that you
+<li>Setup requires ~20 GB of free space</li>
+</ul></li>
+</ul></li>
+</ol><div id="root" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="root" class="callout-inner">
+<h3 class="callout-title">ROOT</h3>
+<div class="callout-content">
+<p>It is <strong>strongly preferred</strong> (but not required) that you
 can run ROOT locally on your system. ROOT is installed within eic-shell,
 so you can process macros in eic-shell. However, viewing plots and files
-interactively in this manner not straightforward. A local install to
+interactively in this manner is not straightforward. A local install to
 view interactive windows is generally very helpful.</p>
 <p>See the <a href="https://root.cern/install/" class="external-link">CERN ROOT</a> webpage
 for information on installing ROOT in a variety of ways on your system
 if it is not already installed.</p>
-<p>::::::::::::::::::::::::::::::::::::::::::::::::</p>
+</div>
+</div>
+</div>
 <p>If you have completed the numbered steps above, then you are ready
 for the tutorial. Additional information and training links are
 below:</p>
@@ -415,10 +414,32 @@ Singularity</a> training (optional)</li>
 <li>HEP Software Foundation <a href="https://hsf-training.github.io/hsf-training-docker/index.html" class="external-link">Docker</a>
 training (optional)</li>
 </ul></li>
-</ul><!--
+</ul><div id="jlabbnl-systems" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="jlabbnl-systems" class="callout-inner">
+<h3 class="callout-title">JLab/BNL Systems</h3>
+<div class="callout-content">
+<p>If you are using the <a href="bnl-sdcc-quickstart.html">BNL SDCC</a>
+or the <a href="jlab-farm-quickstart.html">JLab Farm</a>, you may find
+the quick start info useful if you are new to these systems.</p>
+<p>Singularity is provided by default on BNL SDCC and the JLab iFarm,
+check by trying the command <code>singularity</code> and verify that you
+get an info dump on the usage of the command. You can therefore skip
+step 1 of the instructions and just begin from “2. Download
+<code>eic-shell</code>:”…</p>
+</div>
+</div>
+</div>
+<!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
- --></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
+ -->
+
+
+      </section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link float-end" href="01-introduction.html" rel="next">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
@@ -469,8 +490,8 @@ any links that you are not going to use.
   "url": "https://eic.github.io/eic_france_tutorial_2026/index.html",
   "identifier": "https://eic.github.io/eic_france_tutorial_2026/index.html",
   "dateCreated": "2026-11-04",
-  "dateModified": "2026-11-04",
-  "datePublished": "2026-11-04"
+  "dateModified": "2026-11-05",
+  "datePublished": "2026-11-05"
 }
 
   </script><script>
