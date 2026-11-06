@@ -49,7 +49,7 @@ Again, when we run, we'll want to provide a few of these flags, namely:
 Our input file is specified as an argument without a flag. So as an example command to run our 10 event file from before, we would run:
 
 ```bash
-eicrecon -Ppodio:output_file=Test_10_Events_Reco.root -Pjana:nevents=10 -Pdd4hep:xml_files=epic_craterlake_9x130.xml Test_10_Events.edm4hep.root
+eicrecon -Ppodio:output_file=Test_10_Events_Reco.root -Pjana:nevents=1000 -Pdd4hep:xml_files=epic_craterlake_9x130.xml Test_10_Events.edm4hep.root
 ```
 again, once we run this, we'll get some configuration info dumped to screen and then it should run relatively quickly.
 
