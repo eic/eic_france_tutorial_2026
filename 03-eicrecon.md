@@ -118,7 +118,9 @@ where `HISTERR` will draw our histogram as a histogram with error bars.
 ::::::::::::::::::::::::::::::::::::: challenge
 ### Challenge: Quick TTree->Draw() Analysis
 
-From your file, draw a histogram of $P_{z}$ for **Recosntructed Particles** that have an energy under 20 GeV and are **negatively** charged.
+From your file, draw a histogram of $P_{z}$ for **Recosntructed Particles** that have an energy **under 20 GeV** and are **negatively** charged.
+
+Draw this histogram with error bars. Configure your number of bins and bin width appropriately (with 10 events this won't really matter, for 1000, it should start to matter a bit more).
 
 :::::::::::::::::::::::::::::::::
 
