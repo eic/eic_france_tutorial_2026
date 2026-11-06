@@ -27,11 +27,47 @@ The ePIC software that does this step for us is called [EICrecon](https://github
 
 ## Running EICrecon
 
+As with our simulation, `EICrecon` is installed within `eic-shell`. We can check the available options and flags via:
+
+```bash
+eicrecon -h
+```
+
+Again, when we run, we'll want to provide a few of these flags, namely:
+
+- `-Ppodio:output_file`
+  - Specify the file to output to, example usage
+    - `-Ppodio:output_file=test_output.root`
+- `-Pjana:nevents`
+  - The number of events from our input file to run, example usage
+    - `-Pjana:nevents=100` $\rightarrow$ run 100 events
+- `-Pdd4hep:xml_files`
+  - The detector configuration file that was used in the simulation and to base our reconstruction on. Example usage
+    - `-Pdd4hep:xml_files=epic_craterlake.xml`
+    - Note that by default, `EICrecon` will search for this file in `$DECTOR_PATH`, so we need to source our detector geometry before running `EICrecon` still
+
+Our input file is specified as an argument without a flag. So as an example command to run our 10 event file from before, we would run:
+
+```bash
+eicrecon -Ppodio:output_file=Test_10_Events_Reco.root -Pjana:nevents=10 -Pdd4hep:xml_files=epic_craterlake_9x130.xml Test_10_Events.edm4hep.root
+```
+again, once we run this, we'll get some configuration info dumped to screen and then it should run relatively quickly.
+
+Let's look at the output
+
 :::::::::::::::::::::::::::::::::::::::::::::::::: callout
 
-### Callout
+### Time Saving (Again)
+
+As before, due to how long the reconstruction will take, I recommend running a longer reconstruction in the background as we look at our small initial file.
+
+```bash
+eicrecon -Ppodio:output_file=1000_Events_Reco.root -Pjana:nevents=10 -Pdd4hep:xml_files=epic_craterlake_9x130.xml 1000_Events.edm4hep.root
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+### EICrecon Output File
 
 :::::::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
