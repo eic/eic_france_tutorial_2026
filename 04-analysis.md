@@ -97,7 +97,7 @@ void EIC_France_Analysis(
 }
 ```
 
-:::::::::::::::::::::::::::::::::::::::::::::::::: warning
+:::::::::::::::::::::::::::::::::::::::::::::::::: callout
 
 ### Function and File Naming
 
@@ -115,7 +115,7 @@ root -b -q EIC_France_Analysis.cxx
 
 if your paths are OK, this should run without issue (and do nothing of course),
 
-:::::::::::::::::::::::::::::::::::::::::::::::::: warning
+:::::::::::::::::::::::::::::::::::::::::::::::::: callout
 
 ### Execute in `eic-shell`
 

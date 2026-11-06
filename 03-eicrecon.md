@@ -81,7 +81,7 @@ We can take a quick look at this information directly from the file with `TTree-
 root Test_10_Events_Reco.root
 ```
 
-:::::::::::::::::::::::::::::::::::::::::::::::::: warning
+:::::::::::::::::::::::::::::::::::::::::::::::::: callout
 
 ### Opening Output Files
 
