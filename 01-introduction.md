@@ -78,7 +78,7 @@ By default, when we load the container via CVFMS (or update it), we will get the
 ```bash
 ./install.sh -v <<version>>
 ```
-when you execute your install command. As an example `25.08-stable` is the August 2025 container.
+when you execute your install command. As an example `26.07.0-stable` is the July 2026 (version 0) container.
 
 If you are running on a system with CVFMS (e.g. JLab or BNL farms), you can just run:
 
