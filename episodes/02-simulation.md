@@ -91,6 +91,20 @@ there's lots of options! We'll narrow down to a few:
   - Info
 - Flag 5
   - Info
+ 
+::::::::::::::::::::::::::::::::::::: callout
+### The Afterburner
+
+We processed our simulation output "as is". In doing so, we've ignored the impact of beam effects on our initial and final state particles. We could add these effects in using the [afterburner](https://github.com/eic/afterburner/). This piece of software adds in a large combination of effects to our MC file, including the beam crossing angle, beam divergences and crab cavity impacts. The overall effect is to slightly alter components of the beam and final state particle momentum. For realistic physics simulations, we should generally apply the afterburner. Doing so is simple, within `eic-shell` we can simply run:
+
+```bash
+abconv -p <<preset>> <<Input_File>> -o <<Output_File>> 
+```
+where `<<preset>>` is the beam configuration preset to use and `<<Output_File>>` is the output file to write to (do not include a file suffix). Other options and flags are available, as usual, try `abconv -h`.
+
+Note that the afterburner will try to automatically detect the beam configuration if the `-p` option is not used. Available presets can be seen from the output of `abconv -h`, but some are not printed by default. See [Lines 2110-2166](https://github.com/eic/afterburner/blob/740f6356225fc81c9baee5c76d6dd19976c99417/cpp/afterburner/EicConfigurator.cc#L2110) for the fill list of configurations available.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
