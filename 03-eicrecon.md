@@ -1,95 +1,40 @@
 ---
 title: "Reconstructing our Simulated Output"
-teaching: 15 # teaching time in minutes
-exercises: 15 # exercise time in minutes
+teaching: 15
+exercises: 15
 ---
 
-:::::::::::::::::::::::::::::::::::::: questions 
+:::::::::::::::::::::::::::::::::::::::::::::::::: questions
 
 - What is EICrecon?
 - What does EICrecon do?
 - How do we process events through EICrecon?
 
-::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::: objectives
+:::::::::::::::::::::::::::::::::::::::::::::::::: objectives
 
 - Process our simulated events through EICrecon
-  
-::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
 
-Intro text.
+As mentioned at the end of the last page, our simulation output itself isn't really that useful for physics analysis. We need to reconstruct our events first. In doing so, we will reconstruct things like **tracks** and **clusters** from our raw detector hit information. We can then assign these to particles for example.
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-Inline instructor notes can help inform instructors of timing challenges
-associated with the lessons. They appear in the "Instructor View"
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::: challenge 
-
-## Challenge 1: Can you do it?
-
-What is the output of this command?
-
-```r
-paste("This", "new", "lesson", "looks", "good")
-```
-
-:::::::::::::::::::::::: solution 
-
-## Output
- 
-```output
-[1] "This new lesson looks good"
-```
-
-:::::::::::::::::::::::::::::::::
+The ePIC software that does this step for us is called [EICrecon](https://github.com/eic/eicrecon). EICrecon is a [JANA](https://jeffersonlab.github.io/JANA2/#/) based reconstruction for the ePIC detector. We can process our simulation output through EICrecon to get reconstructed events that we can then analyse and interpret. As before, we'll see how we can run EICrecon and some common flags, then we'll process our output in full as we look at the sample output from a quick run.
 
 
-## Challenge 2: how do you nest solutions within challenge blocks?
+## Running EICrecon
 
-:::::::::::::::::::::::: solution 
+:::::::::::::::::::::::::::::::::::::::::::::::::: callout
 
-You can add a line with at least three colons and a `solution` tag.
+### Callout
 
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Figures
-
-You can use standard markdown for static figures with the following syntax:
-
-`![optional caption that appears below the figure](figure url){alt='alt text for
-accessibility purposes'}`
-
-![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
-
-::::::::::::::::::::::::::::::::::::: callout
-
-Callout sections can highlight information.
-
-They are sometimes used to emphasise particularly important points
-but are also used in some lessons to present "asides": 
-content that is not central to the narrative of the lesson,
-e.g. by providing the answer to a commonly-asked question.
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-## Math
-
-One of our episodes contains $\LaTeX$ equations when describing how to create
-dynamic reports with {knitr}, so we now use mathjax to describe this:
-
-`$\alpha = \dfrac{1}{(1 - \beta)^2}$` becomes: $\alpha = \dfrac{1}{(1 - \beta)^2}$
-
-Cool, right?
-
-::::::::::::::::::::::::::::::::::::: keypoints 
+:::::::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
 - Point 1
 
-::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::
