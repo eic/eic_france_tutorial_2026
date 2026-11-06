@@ -81,17 +81,48 @@ npsim -h
 
 there's lots of options! We'll narrow down to a few:
 
-- Flag 1
-  - Info
-- Flag 2
-  - Info
-- Flag 3
-  - Info
-- Flag 4
-  - Info
-- Flag 5
-  - Info
+- `--compactFile`
+  - **Very important**, this specifies which geometry definition we will simulate with
+  - Try `ls $DETECTOR_PATH` to see the list of available `.xml` configurations
+- `--numberOfEvents`
+  - The number of events to process. We'll keep this low to save time.
+- `--inputFiles`
+  - The file path for the input `.hepmc` file (or files)
+- `--outputFile`
+  - The file path to output to
+- `vX`
+  - The verbosity level of the output to screen. X is a number between 1 and 7 corresponding to VERBOSE,DEBUG,INFO,WARNING,ERROR,FATAL,ALWAYS
+  - E.g. `-v5` would select `ERROR` - We'll print errors.
  
+We will try running a short simulation on the events we generated earlier:
+
+```bash
+npsim --compactFile $DETECTOR_PATH/epic_craterlake_9x130.xml --numberOfEvents 10 --inputFiles Input.hepmc --outputFile Test_10_Events.edm4hep.root
+```
+
+This should start running, there'll be a large info dump to screen with various configuration info loading in. It should not take too long to process.
+
+Once it's done, let's have a quick look at the file.
+
+::::::::::::::::::::::::::::::::::::: callout
+### Time Saving
+
+For our next step, we'll want a larger file, I suggest opening a new terminal tab/window and running this simulation in the background as we look at the output we have so far.
+
+```bash
+npsim --compactFile $DETECTOR_PATH/epic_craterlake_9x130.xml --numberOfEvents 1000 --inputFiles Input.hepmc --outputFile 1000_Events.edm4hep.root
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+We can open it and have a look with ROOT. I recommend you **exit `eic-shell` and look at the file in root externally if you can. If you don't have ROOT installed locally, you can use the [webviewer](https://eic.phy.anl.gov/geoviewer/), but be aware that it is more limited.
+
+```bash
+root Test_10_Events.edm4hep.root
+```
+
+... discussion of content...
+
 ::::::::::::::::::::::::::::::::::::: callout
 ### The Afterburner
 
@@ -108,6 +139,10 @@ Note that the afterburner will try to automatically detect the beam configuratio
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Point 1
-
+- Before running the simulations in `eic-shell`, we need to load in a detector config
+- `npsim` should be used for simulations generally
+- Simulations can take some time to run
+- The output is largely cell/element level hit distributions
+- When simulating physics events, we should afterburn our input first
+  
 ::::::::::::::::::::::::::::::::::::::::::::::::
