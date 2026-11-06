@@ -440,6 +440,103 @@ small initial file.</p>
 </div>
 <div class="section level3">
 <h3 id="eicrecon-output-file">EICrecon Output File<a class="anchor" aria-label="anchor" href="#eicrecon-output-file"></a></h3>
+<p>Our output file now contains quite a few more collections. Again,
+many of these connect directly to specific detectors. Now though, these
+collections relate to reconstructed quantities such as calorimeter
+clusters or particle tracks. For example, <code>B0ECalClusters</code>,
+is a collection of information tied to clusters in the B0
+Electromagnetic Calorimeter. We also have hit level information in some
+collections.</p>
+<p>There are two new sets of collections we need to take closer look at
+though. We now have collections with <code>Associations</code> involved
+somewhere in the name. These collections exist to help us map between
+<code>reconstructed</code> info and <code>simulated</code> (i.e. MC
+truth) information. For simulated data, we can <strong>know</strong>
+which MC truth particle caused a particular track or cluster and map
+between the two. This is useful for understanding what has actually
+happened in our event and we will explore it further in the next part of
+our tutorial. However, note that for <strong>real</strong> experimental
+data, we <strong>cannot</strong> map between the truth and the
+reconstruction in this way. So we need to be careful when using this
+power, particularly if we try to make selections of data using this
+information.</p>
+<p>The other new type of collection is <code>Reconstructed</code>
+particles or jets. These collections group together reconstructed
+detector information (tracks, clusters, PID etc) and present to us a set
+of candidates for each of our events. For example
+<code>ReconstructedParticles</code> is a collection of particles that
+<code>EICrecon</code> has constructed based upon the detector
+reconstruction in the central detector. Looking at this collection, we
+see info we could use to construct 4-vectors for particles in our
+event.</p>
+<p>We can take a quick look at this information directly from the file
+with <code>TTree-&gt;Draw()</code> style commands. Open the file
+with:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="ex">root</span> Test_10_Events_Reco.root</span></code></pre>
+</div>
+</div>
+<div class="section level3 warning">
+<h3 id="opening-output-files">Opening Output Files<a class="anchor" aria-label="anchor" href="#opening-output-files"></a></h3>
+<p>Remember to open and inspect the resulting ROOT output files in a
+local terminal environment <strong>outside of
+<code>eic-shell</code></strong>. Interactive ROOT graphics and TBrowser
+windows typically require a local display environment to render
+properly.</p>
+</div>
+<p>then we can use:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a>events<span class="op">-&gt;</span>Draw<span class="op">(</span><span class="st">"ReconstructedParticles.QUANTITY"</span><span class="op">)</span></span></code></pre>
+</div>
+<p>to draw a quantity we want (e.g. try putting <code>energy</code> in
+place of <code>QUANTITY</code> . By default, ROOT will automatically
+draw this to a 1D histogram with 100 bins. These 100 bins will span the
+full range of available data. This is often <strong>not</strong> that
+useful. We can instead define a histogram ourselves to draw our
+selection to:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a>events<span class="op">-&gt;</span>Draw<span class="op">(</span><span class="st">"ReconstructedParticles.QUANTITY&gt;&gt;h1(NBins, xLow, xHigh)"</span><span class="op">)</span></span></code></pre>
+</div>
+<p>will define a new histogram, <code>h1</code> with <code>NBins</code>
+between <code>xLow</code> and <code>xHigh</code>. Most importantly, we
+can actually define and impose some selection cuts on the events we draw
+too. This does <strong>not</strong> have to be on the quantity we’re
+drawing. For example, we could draw our quantity only for charged
+particles with:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a>events<span class="op">-&gt;</span>Draw<span class="op">(</span><span class="st">"ReconstructedParticles.QUANTITY&gt;&gt;h1(NBins, xLow, xHigh)"</span><span class="op">,</span> <span class="st">"ReconstructedParticles.charge!=0"</span><span class="op">)</span></span></code></pre>
+</div>
+<p>Finally, we could also even provide some draw options:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a>events<span class="op">-&gt;</span>Draw<span class="op">(</span><span class="st">"ReconstructedParticles.QUANTITY&gt;&gt;h1(NBins, xLow, xHigh)"</span><span class="op">,</span> <span class="st">"ReconstructedParticles.charge!=0"</span><span class="op">,</span> <span class="st">"HISTERR"</span><span class="op">)</span></span></code></pre>
+</div>
+<p>where <code>HISTERR</code> will draw our histogram as a histogram
+with error bars.</p>
+<div id="challenge-quick-ttree-draw-analysis" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="challenge-quick-ttree-draw-analysis" class="callout-inner">
+<h3 class="callout-title">Challenge: Quick TTree-&gt;Draw()
+Analysis</h3>
+<div class="callout-content">
+<p>From your file, draw a histogram of <span class="math inline">\(P_{z}\)</span> for <strong>Recosntructed
+Particles</strong> that have an energy under 20 GeV and are
+<strong>negatively</strong> charged.</p>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -455,7 +552,6 @@ small initial file.</p>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</div>
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter Bottom"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/02-simulation.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
