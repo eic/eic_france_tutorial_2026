@@ -70,6 +70,26 @@ Within `eic-shell`, pick a piece of the ePIC software stack from the diagram abo
 
 :::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: callout
+### Switching Container Version
+
+By default, when we load the container via CVFMS (or update it), we will get the latest nightly release. There are specific reasons you may wash to load a different container version though. To install a specific version, you can run:
+
+```bash
+./install.sh -v <<version>>
+```
+when you execute your install command. As an example `25.08-stable` is the August 2025 container.
+
+If you are running on a system with CVFMS (e.g. JLab or BNL farms), you can just run:
+
+```bash
+./eic-shell --version <<version>>
+```
+
+to switch to your desired container version.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 :::::::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
 - The ePIC software stack will be used to simulate and reconstruct our generated events
