@@ -446,22 +446,76 @@ simulations, use <code>npsim</code>.</p>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="ex">npsim</span> <span class="at">-h</span></span></code></pre>
 </div>
 <p>there’s lots of options! We’ll narrow down to a few:</p>
-<ul><li>Flag 1
-<ul><li>Info</li>
+<ul><li>
+<code>--compactFile</code>
+<ul><li>
+<strong>Very important</strong>, this specifies which geometry
+definition we will simulate with</li>
+<li>Try <code>ls $DETECTOR_PATH</code> to see the list of available
+<code>.xml</code> configurations</li>
 </ul></li>
-<li>Flag 2
-<ul><li>Info</li>
+<li>
+<code>--numberOfEvents</code>
+<ul><li>The number of events to process. We’ll keep this low to save
+time.</li>
 </ul></li>
-<li>Flag 3
-<ul><li>Info</li>
+<li>
+<code>--inputFiles</code>
+<ul><li>The file path for the input <code>.hepmc</code> file (or files)</li>
 </ul></li>
-<li>Flag 4
-<ul><li>Info</li>
+<li>
+<code>--outputFile</code>
+<ul><li>The file path to output to</li>
 </ul></li>
-<li>Flag 5
-<ul><li>Info</li>
+<li>
+<code>vX</code>
+<ul><li>The verbosity level of the output to screen. X is a number between 1
+and 7 corresponding to
+VERBOSE,DEBUG,INFO,WARNING,ERROR,FATAL,ALWAYS</li>
+<li>E.g. <code>-v5</code> would select <code>ERROR</code> - We’ll print
+errors.</li>
 </ul></li>
-</ul><div id="the-afterburner" class="callout">
+</ul><p>We will try running a short simulation on the events we generated
+earlier:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="ex">npsim</span> <span class="at">--compactFile</span> <span class="va">$DETECTOR_PATH</span>/epic_craterlake_9x130.xml <span class="at">--numberOfEvents</span> 10 <span class="at">--inputFiles</span> Input.hepmc <span class="at">--outputFile</span> Test_10_Events.edm4hep.root</span></code></pre>
+</div>
+<p>This should start running, there’ll be a large info dump to screen
+with various configuration info loading in. It should not take too long
+to process.</p>
+<p>Once it’s done, let’s have a quick look at the file.</p>
+<div id="time-saving" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="time-saving" class="callout-inner">
+<h3 class="callout-title">Time Saving</h3>
+<div class="callout-content">
+<p>For our next step, we’ll want a larger file, I suggest opening a new
+terminal tab/window and running this simulation in the background as we
+look at the output we have so far.</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="ex">npsim</span> <span class="at">--compactFile</span> <span class="va">$DETECTOR_PATH</span>/epic_craterlake_9x130.xml <span class="at">--numberOfEvents</span> 1000 <span class="at">--inputFiles</span> Input.hepmc <span class="at">--outputFile</span> 1000_Events.edm4hep.root</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<p>We can open it and have a look with ROOT. I recommend you **exit
+<code>eic-shell</code> and look at the file in root externally if you
+can. If you don’t have ROOT installed locally, you can use the <a href="https://eic.phy.anl.gov/geoviewer/" class="external-link">webviewer</a>, but be aware
+that it is more limited.</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a><span class="ex">root</span> Test_10_Events.edm4hep.root</span></code></pre>
+</div>
+<p>… discussion of content…</p>
+<div id="the-afterburner" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -478,10 +532,10 @@ impacts. The overall effect is to slightly alter components of the beam
 and final state particle momentum. For realistic physics simulations, we
 should generally apply the afterburner. Doing so is simple, within
 <code>eic-shell</code> we can simply run:</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="ex">abconv</span> <span class="at">-p</span> <span class="op">&lt;&lt;preset&gt;&gt;</span> <span class="op">&lt;&lt;Input_File&gt;&gt;</span> -o <span class="op">&lt;&lt;Output_File&gt;&gt;</span> </span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="ex">abconv</span> <span class="at">-p</span> <span class="op">&lt;&lt;preset&gt;&gt;</span> <span class="op">&lt;&lt;Input_File&gt;&gt;</span> -o <span class="op">&lt;&lt;Output_File&gt;&gt;</span> </span></code></pre>
 </div>
 <p>where <code>&lt;&lt;preset&gt;&gt;</code> is the beam configuration
 preset to use and <code>&lt;&lt;Output_File&gt;&gt;</code> is the output
@@ -502,7 +556,14 @@ are not printed by default. See <a href="https://github.com/eic/afterburner/blob
 <span class="callout-header">Key Points</span>
 <div class="callout-inner">
 <div class="callout-content">
-<ul><li>Point 1</li>
+<ul><li>Before running the simulations in <code>eic-shell</code>, we need to
+load in a detector config</li>
+<li>
+<code>npsim</code> should be used for simulations generally</li>
+<li>Simulations can take some time to run</li>
+<li>The output is largely cell/element level hit distributions</li>
+<li>When simulating physics events, we should afterburn our input
+first</li>
 </ul></div>
 </div>
 </div>
