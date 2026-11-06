@@ -69,6 +69,59 @@ eicrecon -Ppodio:output_file=1000_Events_Reco.root -Pjana:nevents=10 -Pdd4hep:xm
 
 ### EICrecon Output File
 
+Our output file now contains quite a few more collections. Again, many of these connect directly to specific detectors. Now though, these collections relate to reconstructed quantities such as calorimeter clusters or particle tracks. For example, `B0ECalClusters`, is a collection of information tied to clusters in the B0 Electromagnetic Calorimeter. We also have hit level information in some collections.
+
+There are two new sets of collections we need to take closer look at though. We now have collections with `Associations` involved somewhere in the name. These collections exist to help us map between `reconstructed` info and `simulated` (i.e. MC truth) information. For simulated data, we can **know** which MC truth particle caused a particular track or cluster and map between the two. This is useful for understanding what has actually happened in our event and we will explore it further in the next part of our tutorial. However, note that for **real** experimental data, we **cannot** map between the truth and the reconstruction in this way. So we need to be careful when using this power, particularly if we try to make selections of data using this information.
+
+The other new type of collection is `Reconstructed` particles or jets. These collections group together reconstructed detector information (tracks, clusters, PID etc) and present to us a set of candidates for each of our events. For example `ReconstructedParticles` is a collection of particles that `EICrecon` has constructed based upon the detector reconstruction in the central detector. Looking at this collection, we see info we could use to construct 4-vectors for particles in our event.
+
+We can take a quick look at this information directly from the file with `TTree->Draw()` style commands. Open the file with:
+
+```bash
+root Test_10_Events_Reco.root
+```
+
+:::::::::::::::::::::::::::::::::::::::::::::::::: warning
+
+### Opening Output Files
+
+Remember to open and inspect the resulting ROOT output files in a local terminal environment **outside of `eic-shell`**. Interactive ROOT graphics and TBrowser windows typically require a local display environment to render properly.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+then we can use:
+
+```C++
+events->Draw("ReconstructedParticles.QUANTITY")
+```
+
+to draw a quantity we want (e.g. try putting `energy` in place of `QUANTITY` . By default, ROOT will automatically draw this to a 1D histogram with 100 bins. These 100 bins will span the full range of available data. This is often **not** that useful. We can instead define a histogram ourselves to draw our selection to:
+
+```C++
+events->Draw("ReconstructedParticles.QUANTITY>>h1(NBins, xLow, xHigh)")
+```
+
+will define a new histogram, `h1` with `NBins` between `xLow` and `xHigh`. Most importantly, we can actually define and impose some selection cuts on the events we draw too. This does **not** have to be on the quantity we're drawing. For example, we could draw our quantity only for charged particles with:
+
+```C++
+events->Draw("ReconstructedParticles.QUANTITY>>h1(NBins, xLow, xHigh)", "ReconstructedParticles.charge!=0")
+```
+
+Finally, we could also even provide some draw options:
+
+```C++
+events->Draw("ReconstructedParticles.QUANTITY>>h1(NBins, xLow, xHigh)", "ReconstructedParticles.charge!=0", "HISTERR")
+```
+
+where `HISTERR` will draw our histogram as a histogram with error bars.
+
+::::::::::::::::::::::::::::::::::::: challenge
+### Challenge: Quick TTree->Draw() Analysis
+
+From your file, draw a histogram of $P_{z}$ for **Recosntructed Particles** that have an energy under 20 GeV and are **negatively** charged.
+
+:::::::::::::::::::::::::::::::::
+
 :::::::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
 - Point 1
