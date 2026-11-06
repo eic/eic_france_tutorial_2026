@@ -121,7 +121,11 @@ We can open it and have a look with ROOT. I recommend you **exit `eic-shell` and
 root Test_10_Events.edm4hep.root
 ```
 
-... discussion of content...
+Within the `events` tree, we can see a large range of collections. These are primarily collections of `hits` or `contributions` to various detector subsystems. For example, the `EcalBarrelSciFiHits` collection. This collection contains information on the `energy` and `position`, as well as `cellID` of various hits for this detector subsystem. There's also `contributions_begin` and `contributions_end` items which can be used to trace back the individual contributions to a given hit. 
+
+If you check other `Hits` type collections, you'll see very similar content. Some may have more or less info. Also of interest is the `MCParticles` collection. This contains the original MC information from our input file. This is retained so we can always check the **actual** input for a given event.
+
+For analysis purposes, we *may* want this information to study the response of a particular detector in a lot of detail, or perhaps to develop a new reconstruction algorithm. Generally though, this information isn't particularly useful if we want to do a physics analysis. We need to **reconstruct** our events first. We'll do this in the next part of our lesson.
 
 ::::::::::::::::::::::::::::::::::::: callout
 ### The Afterburner
@@ -143,6 +147,7 @@ Note that the afterburner will try to automatically detect the beam configuratio
 - `npsim` should be used for simulations generally
 - Simulations can take some time to run
 - The output is largely cell/element level hit distributions
+- MC truth info is retained in the simulation output
 - When simulating physics events, we should afterburn our input first
   
 ::::::::::::::::::::::::::::::::::::::::::::::::
