@@ -25,9 +25,9 @@ In this tutorial we will explore some key components and use cases of the ePIC s
 This is analogous to a real experiment:
 
 - Real experiment
-  - Collisions -> Raw signals in detector -> Reconstruct raw signals -> Analyse reconstructed output
+  - Collisions $\rightarrow$ Raw signals in detector $\rightarrow$ Reconstruct raw signals $\rightarrow$ Analyse reconstructed output
 - Simulation
-  - Generate events of interest -> Raw energy depositions in simulation -> Reconstruct raw signals -> Analyse reconstructed output
+  - Generate events of interest $\rightarrow$ Raw energy depositions in simulation $\rightarrow$ Reconstruct raw signals $\rightarrow$ Analyse reconstructed output
 
 This analogy is intentional. We're a little way away from "real" ePIC data, so simulations are all we have from now. However, we don't want to develop a framework that's only useful for simulations! We should analyse our simulations in the same way that we intend to organise and analyse real data. This should smooth the transition to actual running and ensure that we have people (you!) trained on how to analyse and interpret experimental data from day one.
 
@@ -59,9 +59,9 @@ to get the specific container image you're using.
 
 In simulating and reconstructing EIC/ePIC data, a large range of different software packages are used. Where possible, applicable software from other HEP experiments is utilised. For example [ACTS](https://acts-project.github.io/) is used for tracking.
 
-![The ePIC Software Stack. A clickable version is available on [the eic.github.io page](https://eic.github.io/documentation/getstarted.html)](figs/ePIC_Software.png){alt="The web of ePIC software showing connections between different components. Connections to stacks from other sources are also shown. Different stacks are grouped in boxes."}
+![The ePIC Software Stack.](fig/ePIC_Software.png){alt="The web of ePIC software showing connections between different components. Connections to stacks from other sources are also shown. Different stacks are grouped in boxes."}
 
-Much of this software is pre-installed in eic-shell. 
+A clickable version is available on [the eic.github.io page](https://eic.github.io/documentation/getstarted.html). Much of this software is pre-installed in eic-shell. 
 
 ::::::::::::::::::::::::::::::::::::: challenge
 ### Challenge: Check a piece of the software stack
