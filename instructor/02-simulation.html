@@ -324,7 +324,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating ePIC Events</h1>
-        <p>Last updated on 2026-11-05 |
+        <p>Last updated on 2026-11-06 |
 
         <a href="https://github.com/eic/eic_france_tutorial_2026/edit/main/episodes/02-simulation.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -463,7 +463,41 @@ simulations, use <code>npsim</code>.</p>
 <li>Flag 5
 <ul><li>Info</li>
 </ul></li>
-</ul><div id="keypoints1" class="callout keypoints">
+</ul><div id="the-afterburner" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="the-afterburner" class="callout-inner">
+<h3 class="callout-title">The Afterburner</h3>
+<div class="callout-content">
+<p>We processed our simulation output “as is”. In doing so, we’ve
+ignored the impact of beam effects on our initial and final state
+particles. We could add these effects in using the <a href="https://github.com/eic/afterburner/" class="external-link">afterburner</a>. This piece
+of software adds in a large combination of effects to our MC file,
+including the beam crossing angle, beam divergences and crab cavity
+impacts. The overall effect is to slightly alter components of the beam
+and final state particle momentum. For realistic physics simulations, we
+should generally apply the afterburner. Doing so is simple, within
+<code>eic-shell</code> we can simply run:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="ex">abconv</span> <span class="at">-p</span> <span class="op">&lt;&lt;preset&gt;&gt;</span> <span class="op">&lt;&lt;Input_File&gt;&gt;</span> -o <span class="op">&lt;&lt;Output_File&gt;&gt;</span> </span></code></pre>
+</div>
+<p>where <code>&lt;&lt;preset&gt;&gt;</code> is the beam configuration
+preset to use and <code>&lt;&lt;Output_File&gt;&gt;</code> is the output
+file to write to (do not include a file suffix). Other options and flags
+are available, as usual, try <code>abconv -h</code>.</p>
+<p>Note that the afterburner will try to automatically detect the beam
+configuration if the <code>-p</code> option is not used. Available
+presets can be seen from the output of <code>abconv -h</code>, but some
+are not printed by default. See <a href="https://github.com/eic/afterburner/blob/740f6356225fc81c9baee5c76d6dd19976c99417/cpp/afterburner/EicConfigurator.cc#L2110" class="external-link">Lines
+2110-2166</a> for the fill list of configurations available.</p>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
@@ -542,7 +576,7 @@ any links that you are not going to use.
   "url": "https://eic.github.io/eic_france_tutorial_2026/instructor/02-simulation.html",
   "identifier": "https://eic.github.io/eic_france_tutorial_2026/instructor/02-simulation.html",
   "dateCreated": "2026-11-04",
-  "dateModified": "2026-11-05",
+  "dateModified": "2026-11-06",
   "datePublished": "2026-11-06"
 }
 
