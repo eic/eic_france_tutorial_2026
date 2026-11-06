@@ -41,7 +41,22 @@ When you run
 ./eic-shell
 ```
        
-you should load into the container. Within eic-shell, you can use the command
+you should load into the container. If you have loaded the container successfully you should see `jug_dev> $User@$Host` in your terminal.
+
+::::::::::::::::::::::::::::::::::::: callout
+### Escaping `eic-shell`
+
+To leave the eic-shell environment, just type:
+
+```bash
+exit
+```
+
+into your terminal.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+Within eic-shell, you can use the command
 
 ```bash
 eic-info
