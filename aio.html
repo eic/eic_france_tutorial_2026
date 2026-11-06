@@ -779,7 +779,27 @@ that it is more limited.</p>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a><span class="ex">root</span> Test_10_Events.edm4hep.root</span></code></pre>
 </div>
-<p>… discussion of content…</p>
+<p>Within the <code>events</code> tree, we can see a large range of
+collections. These are primarily collections of <code>hits</code> or
+<code>contributions</code> to various detector subsystems. For example,
+the <code>EcalBarrelSciFiHits</code> collection. This collection
+contains information on the <code>energy</code> and
+<code>position</code>, as well as <code>cellID</code> of various hits
+for this detector subsystem. There’s also
+<code>contributions_begin</code> and <code>contributions_end</code>
+items which can be used to trace back the individual contributions to a
+given hit.</p>
+<p>If you check other <code>Hits</code> type collections, you’ll see
+very similar content. Some may have more or less info. Also of interest
+is the <code>MCParticles</code> collection. This contains the original
+MC information from our input file. This is retained so we can always
+check the <strong>actual</strong> input for a given event.</p>
+<p>For analysis purposes, we <em>may</em> want this information to study
+the response of a particular detector in a lot of detail, or perhaps to
+develop a new reconstruction algorithm. Generally though, this
+information isn’t particularly useful if we want to do a physics
+analysis. We need to <strong>reconstruct</strong> our events first.
+We’ll do this in the next part of our lesson.</p>
 <div id="the-afterburner" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -828,6 +848,7 @@ load in a detector config</li>
 <code>npsim</code> should be used for simulations generally</li>
 <li>Simulations can take some time to run</li>
 <li>The output is largely cell/element level hit distributions</li>
+<li>MC truth info is retained in the simulation output</li>
 <li>When simulating physics events, we should afterburn our input
 first</li>
 </ul>
@@ -1049,7 +1070,7 @@ their decay products in the MCParticles collection</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1078,7 +1099,7 @@ challenge blocks?</h3>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>You can add a line with at least three colons and a
 <code>solution</code> tag.</p>
