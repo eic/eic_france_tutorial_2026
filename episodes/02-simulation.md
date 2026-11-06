@@ -60,6 +60,8 @@ mkdir EIC_France_Simulations && cd EIC_France_Simulations
 
 Copy your generated event file from earlier into this directory too. We're now ready to simulate! 
 
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 # Running Simulations
 
 We will run our simulation using the `npsim` command. 
