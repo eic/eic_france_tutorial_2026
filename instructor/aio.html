@@ -1156,13 +1156,133 @@ associations</li>
 </div>
 </div>
 </div>
-<section><h2 class="section-heading" id="introduction---podio">Introduction - PODIO<a class="anchor" aria-label="anchor" href="#introduction---podio"></a>
+<section><h2 class="section-heading" id="introduction---edm4eic-and-podio">Introduction - EDM4EIC and PODIO<a class="anchor" aria-label="anchor" href="#introduction---edm4eic-and-podio"></a>
 </h2>
 <hr class="half-width">
-<p>Intro text on PODIO, the data format itself</p>
+<p>So far, we’ve looked at the files we’ve generated using ROOT.
+However, you might have noticed at one point that our file suffix
+included <code>edm4eic</code>, and indeed, when opening the file in ROOT
+you probably saw some reference to this. This is because the EIC
+software stack uses the <a href="https://github.com/eic/EDM4eic" class="external-link">EDM4eic</a>
+(<strong>E</strong>vent <strong>D</strong>ata <strong>M</strong>odel for
+<strong>EIC</strong>).</p>
+<p>This data model is defined in a single YAML file - <a href="https://github.com/eic/EDM4eic/blob/main/edm4eic.yaml" class="external-link">edm4eic.yaml</a>.
+There are further details (including a diagram of the model) in a <a href="https://eic.github.io/tutorial-track-cluster-matching/02-podio.html" class="external-link">different
+tutorial</a>.</p>
+<p><a href="https://github.com/AIDASoft/podio" class="external-link">PODIO</a> is the toolkit
+which we utilise to generate and interface with this data model. PODIO -
+which stands for
+<strong>P</strong>lain-<strong>O</strong>ld-<strong>D</strong>ata
+<strong>I</strong>nput/<strong>O</strong>utput - reads a YAML data moel
+file and generates all of the C++ and Python code needed to work with
+it.</p>
+<p>For the remainder of this tutorial, we’re going to use PODIO to
+analyse our data. We will do so using C++ and ROOT, but note that you
+can also use Python and ROOT with only a few minor changes.</p>
 <div class="section level3">
 <h3 id="script-skeleton">Script Skeleton<a class="anchor" aria-label="anchor" href="#script-skeleton"></a>
 </h3>
+<p>To begin with, open a new file, call it whatever you like, but for my
+example, I’m opening <code>EIC_France_Analysis.cxx</code>. Copy in the
+code below:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a><span class="pp">#include </span><span class="im">&lt;edm4eic/ClusterCollection.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1" aria-label="code-block-1-2"></a><span class="pp">#include </span><span class="im">&lt;edm4eic/MCRecoTrackParticleAssociationCollection.h&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1" aria-label="code-block-1-3"></a><span class="pp">#include </span><span class="im">&lt;edm4eic/TrackCollection.h&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1" aria-label="code-block-1-4"></a><span class="pp">#include </span><span class="im">&lt;edm4hep/MCParticleCollection.h&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1" aria-label="code-block-1-5"></a><span class="pp">#include </span><span class="im">&lt;edm4hep/Vector3f.h&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1" aria-label="code-block-1-6"></a><span class="pp">#include </span><span class="im">&lt;podio/Frame.h&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1" aria-label="code-block-1-7"></a><span class="pp">#include </span><span class="im">&lt;podio/ObjectID.h&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1" aria-label="code-block-1-8"></a><span class="pp">#include </span><span class="im">&lt;podio/ROOTReader.h&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1" aria-label="code-block-1-9"></a><span class="pp">#include </span><span class="im">&lt;Math/Vector3D.h&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1" aria-label="code-block-1-10"></a><span class="pp">#include </span><span class="im">&lt;Math/Vector4D.h&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1" aria-label="code-block-1-11"></a><span class="pp">#include </span><span class="im">&lt;TFile.h&gt;</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1" aria-label="code-block-1-12"></a><span class="pp">#include </span><span class="im">&lt;TH1.h&gt;</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1" aria-label="code-block-1-13"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1" aria-label="code-block-1-14"></a><span class="pp">#include </span><span class="im">&lt;optional&gt;</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1" aria-label="code-block-1-15"></a><span class="pp">#include </span><span class="im">&lt;map&gt;</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1" aria-label="code-block-1-16"></a><span class="pp">#include </span><span class="im">&lt;memory&gt;</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1" aria-label="code-block-1-17"></a><span class="pp">#include </span><span class="im">&lt;set&gt;</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1" aria-label="code-block-1-18"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1" aria-label="code-block-1-19"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1" aria-label="code-block-1-20"></a><span class="pp">#include </span><span class="im">&lt;utility&gt;</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1" aria-label="code-block-1-21"></a></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1" aria-label="code-block-1-22"></a>TH1<span class="op">::</span>SetDefaultSumw2<span class="op">(</span>kTRUE<span class="op">);</span></span></code></pre>
+</div>
+<p>This block just define various files to include, next, paste in:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="dt">void</span> EIC_France_Analysis<span class="op">(</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a>  <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> in_file   <span class="op">=</span> <span class="st">"1000_Events_Reco.root"</span><span class="op">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1" aria-label="code-block-2-3"></a>  <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> out_file  <span class="op">=</span> <span class="st">"EIC_France_Analysis_Out.root"</span><span class="op">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1" aria-label="code-block-2-4"></a>  <span class="at">const</span> <span class="dt">float</span>        match_cut <span class="op">=</span> <span class="fl">0.2</span><span class="op">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1" aria-label="code-block-2-5"></a>  <span class="at">const</span> <span class="dt">float</span>        ep_min    <span class="op">=</span> <span class="fl">0.8</span><span class="op">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1" aria-label="code-block-2-6"></a>  <span class="at">const</span> <span class="dt">float</span>        ep_max    <span class="op">=</span> <span class="fl">1.2</span><span class="op">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1" aria-label="code-block-2-7"></a>  <span class="at">const</span> <span class="dt">float</span>        mass_min  <span class="op">=</span> <span class="fl">2.5</span><span class="op">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1" aria-label="code-block-2-8"></a>  <span class="at">const</span> <span class="dt">float</span>        mass_max  <span class="op">=</span> <span class="fl">3.5</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1" aria-label="code-block-2-9"></a><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1" aria-label="code-block-2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1" aria-label="code-block-2-11"></a>  <span class="co">// Open reader and output file ==============================================</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1" aria-label="code-block-2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1" aria-label="code-block-2-13"></a>  podio<span class="op">::</span>ROOTReader reader <span class="op">=</span> podio<span class="op">::</span>ROOTReader<span class="op">();</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1" aria-label="code-block-2-14"></a>  reader<span class="op">.</span>openFile<span class="op">(</span>in_file<span class="op">);</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1" aria-label="code-block-2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1" aria-label="code-block-2-16"></a>  TFile<span class="op">*</span> output <span class="op">=</span> <span class="kw">new</span> TFile<span class="op">(</span>out_file<span class="op">.</span>data<span class="op">(),</span> <span class="st">"recreate"</span><span class="op">);</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1" aria-label="code-block-2-17"></a></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1" aria-label="code-block-2-18"></a>  <span class="co">// Event loop ===============================================================</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1" aria-label="code-block-2-19"></a></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1" aria-label="code-block-2-20"></a>  <span class="cf">while</span> <span class="op">(</span><span class="kw">auto</span> entry <span class="op">=</span> reader<span class="op">.</span>readNextEntry<span class="op">(</span>podio<span class="op">::</span>Category<span class="op">::</span>Event<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1" aria-label="code-block-2-21"></a></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1" aria-label="code-block-2-22"></a>    <span class="kw">auto</span> frame <span class="op">=</span> podio<span class="op">::</span>Frame<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>entry<span class="op">));</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1" aria-label="code-block-2-23"></a>  <span class="op">}</span>  <span class="co">// end event loop</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1" aria-label="code-block-2-24"></a></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1" aria-label="code-block-2-25"></a>  <span class="co">// Calculate efficiencies and save output ===================================</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1" aria-label="code-block-2-26"></a></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1" aria-label="code-block-2-27"></a>  output<span class="op">-&gt;</span>cd<span class="op">();</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1" aria-label="code-block-2-28"></a>  output<span class="op">-&gt;</span>Write<span class="op">();</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1" aria-label="code-block-2-29"></a>  output<span class="op">-&gt;</span>Close<span class="op">();</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1" aria-label="code-block-2-30"></a>  <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1" aria-label="code-block-2-31"></a></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1" aria-label="code-block-2-32"></a><span class="op">}</span></span></code></pre>
+</div>
+</div>
+<div class="section level3 warning">
+<h3 id="function-and-file-naming">Function and File Naming<a class="anchor" aria-label="anchor" href="#function-and-file-naming"></a>
+</h3>
+<p>If your file is <strong>not</strong> called
+<code>EIC_France_Analysis.cxx</code>, make sure you change the name of
+the void function.</p>
+<p>Equally, the input and output filenames are
+<strong>hardcoded</strong> in this script. Modify the input to match
+your input filename and name the output as you like.</p>
+</div>
+<p>As is, this won’t really do anything yet. <strong>But</strong>, we
+can check it runs via:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">root</span> <span class="at">-b</span> <span class="at">-q</span> EIC_France_Analysis.cxx</span></code></pre>
+</div>
+<p>if your paths are OK, this should run without issue (and do nothing
+of course),</p>
+<div class="section level3 warning">
+<h3 id="execute-in-eic-shell">Execute in <code>eic-shell</code>
+<a class="anchor" aria-label="anchor" href="#execute-in-eic-shell"></a>
+</h3>
+<p>Unless you have <code>ed4hep</code> and <code>podio</code> installed
+locally, run this within <code>eic-shell</code>.</p>
+</div>
+<div class="section level3">
+<h3 id="adding-a-getter">Adding a Getter<a class="anchor" aria-label="anchor" href="#adding-a-getter"></a>
+</h3>
+<p>A script that doesn’t do anything isn’t particularly useful (hey it
+could be worse, it could just crash). So let’s make it a bit more
+useful.</p>
+<p>We’ll start by adding a <code>getter</code> to get some info from our
+file.</p>
 </div>
 </section><section><h2 class="section-heading" id="mcparticles">MCParticles<a class="anchor" aria-label="anchor" href="#mcparticles"></a>
 </h2>
