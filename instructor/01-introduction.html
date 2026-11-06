@@ -403,20 +403,41 @@ issue. This helps narrow down issues rapidly.</p>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a><span class="ex">./eic-shell</span></span></code></pre>
 </div>
-<p>you should load into the container. Within eic-shell, you can use the
-command</p>
+<p>you should load into the container. If you have loaded the container
+successfully you should see <code>jug_dev&gt; $User@$Host</code> in your
+terminal.</p>
+<div id="escaping-eic-shell" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="escaping-eic-shell" class="callout-inner">
+<h3 class="callout-title">Escaping <code>eic-shell</code>
+</h3>
+<div class="callout-content">
+<p>To leave the eic-shell environment, just type:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="ex">eic-info</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="bu">exit</span></span></code></pre>
+</div>
+<p>into your terminal.</p>
+</div>
+</div>
+</div>
+<p>Within eic-shell, you can use the command</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">eic-info</span></span></code></pre>
 </div>
 <p>to check the versions of lots of software. This will provide a large
 info dump, you can narrow it down via <code>grep</code> commands. For
 example, you can check your container versions via:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">eic-info</span> <span class="kw">|</span> <span class="fu">grep</span> jug_dev</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="ex">eic-info</span> <span class="kw">|</span> <span class="fu">grep</span> jug_dev</span></code></pre>
 </div>
 <p>to get the specific container image you’re using.</p>
 </div>
@@ -457,19 +478,19 @@ container you’ve just loaded.</p>
 will get the latest nightly release. There are specific reasons you may
 wash to load a different container version though. To install a specific
 version, you can run:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="ex">./install.sh</span> <span class="at">-v</span> <span class="op">&lt;&lt;version&gt;&gt;</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="ex">./install.sh</span> <span class="at">-v</span> <span class="op">&lt;&lt;version&gt;&gt;</span></span></code></pre>
 </div>
 <p>when you execute your install command. As an example
 <code>26.07.0-stable</code> is the July 2026 (version 0) container.</p>
 <p>If you are running on a system with CVFMS (e.g. JLab or BNL farms),
 you can just run:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="ex">./eic-shell</span> <span class="at">--version</span> <span class="op">&lt;&lt;version&gt;&gt;</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="ex">./eic-shell</span> <span class="at">--version</span> <span class="op">&lt;&lt;version&gt;&gt;</span></span></code></pre>
 </div>
 <p>to switch to your desired container version.</p>
 </div>
