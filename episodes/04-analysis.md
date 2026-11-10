@@ -442,7 +442,7 @@ for (const auto& electron_1 : rec_electrons) {
 ```
 
 ::::::::::::::::::::::::::::::::::::: challenge
-### Challenge: Plot and fit invariant mass
+### Challenge: Plot invariant mass
 
 For events where a $J/\psi$ candidate is found, fill a histogram with the calculated invariant mass from the $e^{+}e^{-}$ pair.
 
