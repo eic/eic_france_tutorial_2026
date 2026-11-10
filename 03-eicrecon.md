@@ -126,6 +126,7 @@ Draw this histogram with error bars. Configure your number of bins and bin width
 
 :::::::::::::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Point 1
-
+- EICrecon is the reconstruction software for ePIC and EIC simulations
+- Our output is a PODIO/ROOT file
+- We can quickly analyse and inspect the contents with `TTree->Draw()`
 ::::::::::::::::::::::::::::::::::::::::::::::::::
