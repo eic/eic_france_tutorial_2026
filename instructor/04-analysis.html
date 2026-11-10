@@ -247,7 +247,6 @@
       <div class="accordion-body">
         <ul><li><a href="#introduction---edm4eic-and-podio">Introduction - EDM4EIC and PODIO</a></li>
 <li><a href="#mcparticles">MCParticles</a></li>
-<li><a href="#associations">Associations</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
 
@@ -326,7 +325,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Analysing Reconstructed Output</h1>
-        <p>Last updated on 2026-11-06 |
+        <p>Last updated on 2026-11-10 |
 
         <a href="https://github.com/eic/eic_france_tutorial_2026/edit/main/episodes/04-analysis.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -483,7 +482,7 @@ can check it runs via:</p>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">root</span> <span class="at">-b</span> <span class="at">-q</span> EIC_France_Analysis.cxx</span></code></pre>
 </div>
 <p>if your paths are OK, this should run without issue (and do nothing
-of course),</p>
+of course).</p>
 <div id="execute-in-eic-shell" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -506,14 +505,123 @@ could be worse, it could just crash). So let’s make it a bit more
 useful.</p>
 <p>We’ll start by adding a <code>getter</code> to get some info from our
 file.</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a> <span class="kw">auto</span><span class="op">&amp;</span> MCparticles <span class="op">=</span> frame<span class="op">.</span>get<span class="op">&lt;</span>edm4hep<span class="op">::</span>MCParticleCollection<span class="op">&gt;(</span><span class="st">"MCParticles"</span><span class="op">);</span></span></code></pre>
+</div>
+<p>add this any point after the frame is defined, within the event loop.
+We can add other collections in the same way as we want/need.</p>
+</div>
+<div class="section level3">
+<h3 id="adding-some-helpers">Adding some helpers<a class="anchor" aria-label="anchor" href="#adding-some-helpers"></a></h3>
+<p>We’ll also add some helper functions that will be used a little later
+on:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="co">// Convert edm4hep::Vector3f into a ROOT::Math::XZYVector</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1" aria-label="code-block-5-2"></a><span class="co">//   --&gt; Useful for some vector calculations</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1" aria-label="code-block-5-3"></a><span class="kw">auto</span> convert_vector_float <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> edm4hep<span class="op">::</span>Vector3f<span class="op">&amp;</span> edm_vec<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1" aria-label="code-block-5-4"></a>  <span class="cf">return</span> ROOT<span class="op">::</span>Math<span class="op">::</span>XYZVector<span class="op">(</span>edm_vec<span class="op">.</span>x<span class="op">,</span> edm_vec<span class="op">.</span>y<span class="op">,</span> edm_vec<span class="op">.</span>z<span class="op">);</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1" aria-label="code-block-5-5"></a><span class="op">};</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1" aria-label="code-block-5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1" aria-label="code-block-5-7"></a><span class="co">// Convert edm4hep::Vector3d into a ROOT::Math::XZYVector</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1" aria-label="code-block-5-8"></a><span class="co">//   --&gt; edm4hep stores momentum values as doubles, not floats</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1" aria-label="code-block-5-9"></a><span class="kw">auto</span> convert_vector_double <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> edm4hep<span class="op">::</span>Vector3d<span class="op">&amp;</span> edm_vec<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1" aria-label="code-block-5-10"></a>  <span class="cf">return</span> ROOT<span class="op">::</span>Math<span class="op">::</span>XYZVector<span class="op">(</span>edm_vec<span class="op">.</span>x<span class="op">,</span> edm_vec<span class="op">.</span>y<span class="op">,</span> edm_vec<span class="op">.</span>z<span class="op">);</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1" aria-label="code-block-5-11"></a><span class="op">};</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1" aria-label="code-block-5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1" aria-label="code-block-5-13"></a><span class="co">// Get 4-vector for a particle</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1" aria-label="code-block-5-14"></a><span class="co">//   --&gt; Will need to compare rec vs. sim momentum/eta </span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1" aria-label="code-block-5-15"></a><span class="kw">auto</span> get_lorentz_particle <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> edm4hep<span class="op">::</span>MCParticle<span class="op">&amp;</span> MCparticle<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1" aria-label="code-block-5-16"></a>  <span class="cf">return</span> ROOT<span class="op">::</span>Math<span class="op">::</span>PxPyPzM4D<span class="op">(</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1" aria-label="code-block-5-17"></a>    particle<span class="op">.</span>getMomentum<span class="op">().</span>x<span class="op">,</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1" aria-label="code-block-5-18"></a>    particle<span class="op">.</span>getMomentum<span class="op">().</span>y<span class="op">,</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1" aria-label="code-block-5-19"></a>    particle<span class="op">.</span>getMomentum<span class="op">().</span>z<span class="op">,</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1" aria-label="code-block-5-20"></a>    particle<span class="op">.</span>getMass<span class="op">()</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1" aria-label="code-block-5-21"></a>  <span class="op">);</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1" aria-label="code-block-5-22"></a><span class="op">};</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1" aria-label="code-block-5-23"></a></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1" aria-label="code-block-5-24"></a><span class="co">// Compare 2 object IDs</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1" aria-label="code-block-5-25"></a><span class="co">//   --&gt; Needed for bookkeeping</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1" aria-label="code-block-5-26"></a><span class="kw">auto</span> compare_object_ids <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> podio<span class="op">::</span>ObjectID<span class="op">&amp;</span> lhs<span class="op">,</span> <span class="at">const</span> podio<span class="op">::</span>ObjectID<span class="op">&amp;</span> rhs<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1" aria-label="code-block-5-27"></a>  <span class="cf">if</span> <span class="op">(</span>lhs<span class="op">.</span>collectionID <span class="op">==</span> rhs<span class="op">.</span>collectionID<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1" aria-label="code-block-5-28"></a>    <span class="cf">return</span> <span class="op">(</span>lhs<span class="op">.</span>index <span class="op">&lt;</span> rhs<span class="op">.</span>index<span class="op">);</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1" aria-label="code-block-5-29"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1" aria-label="code-block-5-30"></a>    <span class="cf">return</span> <span class="op">(</span>lhs<span class="op">.</span>collectionID <span class="op">&lt;</span> rhs<span class="op">.</span>collectionID<span class="op">);</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1" aria-label="code-block-5-31"></a>  <span class="op">}</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1" aria-label="code-block-5-32"></a><span class="op">};</span></span></code></pre>
+</div>
+<p>Add these after the getter we added above.</p>
 </div>
 </section><section><h2 class="section-heading" id="mcparticles">MCParticles<a class="anchor" aria-label="anchor" href="#mcparticles"></a></h2>
-<hr class="half-width"><div class="section level3">
-<h3 id="identifying-jpsi-particles">Identifying <span class="math inline">\(J/\psi\)</span>
-Particles<a class="anchor" aria-label="anchor" href="#identifying-jpsi-particles"></a></h3>
+<hr class="half-width"><p>Now that we’ve added a getter and our helper functions, we can
+actually try and get some info and do something with it. Our getter got
+the <code>MCParticles</code> collection for our frame (i.e. our event).
+We can loop over all particles in this collection and create 4-vectors
+for the MCParticles in our event:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> MCparticle <span class="op">:</span> MCparticles<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1" aria-label="code-block-6-2"></a>  <span class="at">const</span> <span class="kw">auto</span> MCpart_lorentz <span class="op">=</span> get_lorentz_particle<span class="op">(</span>MCparticle<span class="op">);</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1" aria-label="code-block-6-3"></a>  cout <span class="op">&lt;&lt;</span> MCparticle<span class="op">.</span>getPDG <span class="op">&lt;&lt;</span> <span class="st">"   "</span> <span class="op">&lt;&lt;</span> MCpart_lorentz<span class="op">.</span>Px<span class="op">()</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1" aria-label="code-block-6-4"></a><span class="op">}</span></span></code></pre>
 </div>
-</section><section><h2 class="section-heading" id="associations">Associations<a class="anchor" aria-label="anchor" href="#associations"></a></h2>
-<hr class="half-width"><div id="keypoints1" class="callout keypoints">
+<p>Add this after all of our functions we’ve just added (still within
+the event loop). Now re-run the macro, we should now get some
+output.</p>
+<div class="section level3">
+<h3 id="histograms">Histograms<a class="anchor" aria-label="anchor" href="#histograms"></a></h3>
+<p>We probably <em>don’t</em> just want to print lots of information to
+screen though. More useful would be to make some plots of some sort, so
+let’s do that. Let’s fill some histograms with our information. To begin
+with, let’s define a histogram:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a>TH1D<span class="op">*</span> h1_MCPart_Px <span class="op">=</span> <span class="kw">new</span> TH1D<span class="op">(</span><span class="st">"h1_MCPart_Px"</span><span class="op">,</span> <span class="st">"P_{xMC};P_{xMC}/(GeV/c);Entries"</span><span class="op">,</span> <span class="dv">200</span><span class="op">,</span> <span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span><span class="op">);</span></span></code></pre>
+</div>
+<p>Add this definition <em>before</em> the event loop begins. We’ve
+define a 1D histogram to fill with our MC particle <span class="math inline">\(P_{x}\)</span> values here. So let’s then fill it
+with this information:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a>  h1_MCPart_Px<span class="op">-&gt;</span>Fill<span class="op">(</span>MCpart_lorentz<span class="op">.</span>Px<span class="op">());</span></span></code></pre>
+</div>
+<p>put this after the cout statement before (or replace the statement
+with it).</p>
+<div id="challenge-add-some-extra-histograms" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="challenge-add-some-extra-histograms" class="callout-inner">
+<h3 class="callout-title">Challenge: Add some extra histograms</h3>
+<div class="callout-content">
+<p>Add and fill the following histograms to the code:</p>
+<ol style="list-style-type: decimal"><li>Py, Pz, P and E</li>
+<li><span class="math inline">\(\eta\)</span></li>
+<li><span class="math inline">\(\theta\)</span></li>
+<li>$for <strong>electrons</strong> only</li>
+</ol><p><strong>Hint</strong> - Think carefully about the number of bins and
+the binning range of these new hisotgrams</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="identifying-jpsi-particles-and-daughters">Identifying <span class="math inline">\(J/\psi\)</span> Particles
+<strong>and</strong> Daughters<a class="anchor" aria-label="anchor" href="#identifying-jpsi-particles-and-daughters"></a></h3>
+<p>So far, much of this probably looks like things we could probably do
+straightforwardly in ROOT without dealing with PODIO. We’ll now look at
+a very quick demonstration of how we can use PODIO very nicely to pick
+out something of interest to us. We will use PODIO to quickly identify
+the decay products of <span class="math inline">\(J/\psi\)</span>
+particles</p>
+<div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
@@ -528,6 +636,7 @@ Particles<a class="anchor" aria-label="anchor" href="#identifying-jpsi-particles
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
+</div>
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter Bottom"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/03-eicrecon.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
@@ -588,7 +697,7 @@ any links that you are not going to use.
   "url": "https://eic.github.io/eic_france_tutorial_2026/instructor/04-analysis.html",
   "identifier": "https://eic.github.io/eic_france_tutorial_2026/instructor/04-analysis.html",
   "dateCreated": "2026-11-04",
-  "dateModified": "2026-11-06",
+  "dateModified": "2026-11-10",
   "datePublished": "2026-11-10"
 }
 
