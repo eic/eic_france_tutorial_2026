@@ -16,8 +16,9 @@ exercises: 45 # exercise time in minutes
 
 - Create a script to open our reconstructed output
 - Identify our beam particles from the MCParticles collection
-- Identify $J\psi$ particles from their decay products in the MCParticles collection
-- Connect some of our MCParticles to ReconstructedParticles with associations
+- Identify $J\psi$ particles and their decay products in the MCParticles collection
+- Connect some reconstructed tracks and calorimeter clusters, identify potential electrons/positrons
+- Try to find some reconstructed $J/\psi$'s
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -217,7 +218,30 @@ Add and fill the following histograms to the code:
 3. $\theta$
 4. $\theta$ for **electrons** only
 
-**Hint** - Think carefully about the number of bins and the binning range of these new hisotgrams
+**Hint** - Think carefully about the number of bins and the binning range of these new histograms
+:::::::::::::::::::::::::::::::::
+
+### Beam Particles
+
+Our MCParticles collection contains everything we fed into our simulation from our generated events. This *includes* the incoming electron and ion beam. We can easily identify these particles by using the `GeneratorStatus` value of our particles.
+
+Beam particles will have a **generator status of 4.**
+
+Our final state particles have a **generator status of 1**. Within our loop over MCParticles we can use:
+
+```C++
+cout << MCparticle.getGeneratorStatus() << endl;
+```
+
+to print the status value.
+
+
+::::::::::::::::::::::::::::::::::::: challenge
+### Challenge: Replot our histogramss
+
+For the histograms we created and filled before, fill them for **all non-beam particles**.
+
+Make a separate set of histograms for **all beam particles** and fill them with the incoming electron and ion beam information.
 
 :::::::::::::::::::::::::::::::::
 
