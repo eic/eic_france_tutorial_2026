@@ -1180,6 +1180,10 @@ it.</p>
 <p>For the remainder of this tutorial, we’re going to use PODIO to
 analyse our data. We will do so using C++ and ROOT, but note that you
 can also use Python and ROOT with only a few minor changes.</p>
+<p>This is acutally a slightly reworked segment of a broader tutorial
+from Derek Anderson on <a href="https://eic.github.io/tutorial-track-cluster-matching/index.html" class="external-link">Track-Cluster
+Matching</a>. For the python equivalent versions of the steps below, you
+could consult this tutorial.</p>
 <div class="section level3">
 <h3 id="script-skeleton">Script Skeleton<a class="anchor" aria-label="anchor" href="#script-skeleton"></a>
 </h3>
@@ -1355,14 +1359,15 @@ on:</p>
 <p>Now that we’ve added a getter and our helper functions, we can
 actually try and get some info and do something with it. Our getter got
 the <code>MCParticles</code> collection for our frame (i.e. our event).
-We can loop over all particles in this collection and create 4-vectors
-for the MCParticles in our event:</p>
+These are our <em>actual</em> event output, our <strong>truth</strong>
+information. We can loop over all particles in this collection and
+create 4-vectors for the MCParticles in our event:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> MCparticle <span class="op">:</span> MCparticles<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1" aria-label="code-block-6-2"></a>  <span class="at">const</span> <span class="kw">auto</span> MCpart_lorentz <span class="op">=</span> get_lorentz_particle<span class="op">(</span>MCparticle<span class="op">);</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1" aria-label="code-block-6-3"></a>  cout <span class="op">&lt;&lt;</span> MCparticle<span class="op">.</span>getPDG <span class="op">&lt;&lt;</span> <span class="st">"   "</span> <span class="op">&lt;&lt;</span> MCpart_lorentz<span class="op">.</span>Px<span class="op">()</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1" aria-label="code-block-6-3"></a>  cout <span class="op">&lt;&lt;</span> MCparticle<span class="op">.</span>getPDG<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"   "</span> <span class="op">&lt;&lt;</span> MCpart_lorentz<span class="op">.</span>Px<span class="op">()</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1" aria-label="code-block-6-4"></a><span class="op">}</span></span></code></pre>
 </div>
 <p>Add this after all of our functions we’ve just added (still within
@@ -1403,7 +1408,9 @@ with it).</p>
 <li>Py, Pz, P and E</li>
 <li><span class="math inline">\(\eta\)</span></li>
 <li><span class="math inline">\(\theta\)</span></li>
-<li>$for <strong>electrons</strong> only</li>
+<li>
+<span class="math inline">\(\theta\)</span> for
+<strong>electrons</strong> only</li>
 </ol>
 <p><strong>Hint</strong> - Think carefully about the number of bins and
 the binning range of these new hisotgrams</p>
@@ -1420,7 +1427,278 @@ straightforwardly in ROOT without dealing with PODIO. We’ll now look at
 a very quick demonstration of how we can use PODIO very nicely to pick
 out something of interest to us. We will use PODIO to quickly identify
 the decay products of <span class="math inline">\(J/\psi\)</span>
-particles</p>
+particles:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a>  <span class="cf">if</span> <span class="op">(</span>particle<span class="op">.</span>getPDG<span class="op">()</span> <span class="op">==</span> <span class="dv">443</span><span class="op">)</span> <span class="op">{</span> <span class="co">// J/Psi is PDG 443</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1" aria-label="code-block-9-2"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span>edm4hep<span class="op">::</span>MCParticle<span class="op">&gt;</span> decays<span class="op">;</span> <span class="co">// An array we will store our decay products in</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1" aria-label="code-block-9-3"></a>  <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> daughter <span class="op">:</span> particle<span class="op">.</span>getDaughters<span class="op">())</span> <span class="op">{</span> <span class="co">// Loop over our J/Psi daughter particles</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1" aria-label="code-block-9-4"></a>    decays<span class="op">.</span>push_back<span class="op">(</span>daughter<span class="op">);</span> <span class="co">// Add the daughter particles to our vector</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1" aria-label="code-block-9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1" aria-label="code-block-9-6"></a>    <span class="at">const</span> <span class="kw">auto</span>  daug_mom <span class="op">=</span> convert_vector_double<span class="op">(</span>particle<span class="op">.</span>getMomentum<span class="op">());</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1" aria-label="code-block-9-7"></a>    <span class="at">const</span> <span class="dt">float</span> daug_eta <span class="op">=</span> ele_mom<span class="op">.</span>Eta<span class="op">();</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1" aria-label="code-block-9-8"></a>    <span class="at">const</span> <span class="dt">float</span> daug_mag <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span>ele_mom<span class="op">.</span>Mag2<span class="op">());</span>  <span class="co">// Mag() isn't implemented for XYZVector</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1" aria-label="code-block-9-9"></a>    cout <span class="op">&lt;&lt;</span> daughter<span class="op">.</span>getPDG<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"   "</span> <span class="op">&lt;&lt;</span> daug_eta <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1" aria-label="code-block-9-10"></a>  <span class="op">}</span></span></code></pre>
+</div>
+<p>add this block after looping over particles in a frame. Now when we
+run our code, we should print out the PDG code and <span class="math inline">\(\eta\)</span> value for all of our produced <span class="math inline">\(J/\psi\)</span> daughters.</p>
+<div id="challenge-find-some-leptonic-decays" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="challenge-find-some-leptonic-decays" class="callout-inner">
+<h3 class="callout-title">Challenge: Find some leptonic decays</h3>
+<div class="callout-content">
+<p>Now that we have the block of code to pick out the daughters of the
+produced <span class="math inline">\(J/Psi\)</span>, let’s take a closer
+look. Add in:</p>
+<ul>
+<li>A histogram of the momentum, <span class="math inline">\(P\)</span>,
+of all daughter particles</li>
+<li>A 2D histogram of <span class="math inline">\(\eta\)</span> for the
+decay products vs <span class="math inline">\(P_{J/\psi}\)</span> - the
+momentum of the initial <span class="math inline">\(J/\psi\)</span>
+</li>
+<li>Identify only events where the <span class="math inline">\(J/\psi\)</span> decayed to an <span class="math inline">\(e^{+}e^{-}\)</span> pair
+<ul>
+<li>Create an alternative version of the histograms above that are
+filled <em>only</em> for <span class="math inline">\(e^{+}e^{-}\)</span>
+pairs</li>
+<li>Create a 2D histogram of <span class="math inline">\(P_{e^{+}}\)</span> vs <span class="math inline">\(P_{e^{-}}\)</span> - the momentum of the positron
+versus the electron in the <span class="math inline">\(J/\psi\)</span>
+decay pair</li>
+<li>Create a 2D histogram of <span class="math inline">\(\eta_{e^{+}}\)</span> vs <span class="math inline">\(\eta_{e^{-}}\)</span> - the <span class="math inline">\(\eta\)</span> of the positron versus the electron
+in the <span class="math inline">\(J/\psi\)</span> decay pair</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="cout-lines" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="cout-lines" class="callout-inner">
+<h3 class="callout-title">
+<code>cout</code> lines</h3>
+<div class="callout-content">
+<p>Remember to remove or comment out any <code>cout</code> lines if
+they’re no longer useful to prevent a lot of printout to screen.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="reconstructed-particles">Reconstructed Particles<a class="anchor" aria-label="anchor" href="#reconstructed-particles"></a>
+</h2>
+<hr class="half-width">
+<p>After doing our simulation, we probably don’t want to just know our
+MC truth information (indeed, we already knew this before simulating
+anything). We probably also want to look at our
+<strong>reconstructed</strong> information. Which of our events were
+reconstructed? What did we see in the event?</p>
+<p>We will begin by adding some getters to get some
+<strong>track</strong> and calorimeter <strong>cluster</strong>
+information in the central detector. We’ll then match up tracks and
+clusters before trying to identify electrons (or positrons) from them.
+First, the getters:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a><span class="kw">auto</span><span class="op">&amp;</span> tracks       <span class="op">=</span> frame<span class="op">.</span>get<span class="op">&lt;</span>edm4eic<span class="op">::</span>TrackCollection<span class="op">&gt;(</span><span class="st">"CentralCKFTracks"</span><span class="op">);</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1" aria-label="code-block-10-2"></a><span class="kw">auto</span><span class="op">&amp;</span> clusters_neg <span class="op">=</span> frame<span class="op">.</span>get<span class="op">&lt;</span>edm4eic<span class="op">::</span>ClusterCollection<span class="op">&gt;(</span><span class="st">"EcalEndcapNClusters"</span><span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1" aria-label="code-block-10-3"></a><span class="kw">auto</span><span class="op">&amp;</span> clusters_cen <span class="op">=</span> frame<span class="op">.</span>get<span class="op">&lt;</span>edm4eic<span class="op">::</span>ClusterCollection<span class="op">&gt;(</span><span class="st">"EcalBarrelClusters"</span><span class="op">);</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1" aria-label="code-block-10-4"></a><span class="kw">auto</span><span class="op">&amp;</span> clusters_pos <span class="op">=</span> frame<span class="op">.</span>get<span class="op">&lt;</span>edm4eic<span class="op">::</span>ClusterCollection<span class="op">&gt;(</span><span class="st">"EcalEndcapPClusters"</span><span class="op">);</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1" aria-label="code-block-10-5"></a><span class="kw">auto</span><span class="op">&amp;</span> associations <span class="op">=</span> frame<span class="op">.</span>get<span class="op">&lt;</span>edm4eic<span class="op">::</span>MCRecoTrackParticleAssociationCollection<span class="op">&gt;(</span><span class="st">"CentralCKFTrackAssociations"</span><span class="op">);</span></span></code></pre>
+</div>
+<p>Add these in the same place as the existing getter for MCParticles.
+Now, two other helper functions to add:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" tabindex="-1" aria-label="code-block-11-1"></a><span class="co">// Get cluster 3-momentum using its position and energy</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1" aria-label="code-block-11-2"></a><span class="co">//   --&gt; Assuming interaction vetex is at origin!</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1" aria-label="code-block-11-3"></a><span class="kw">auto</span> get_momentum <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> ROOT<span class="op">::</span>Math<span class="op">::</span>XYZVector<span class="op">&amp;</span> position<span class="op">,</span> <span class="at">const</span> <span class="dt">double</span> energy<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1" aria-label="code-block-11-4"></a>  <span class="cf">return</span> energy <span class="op">*</span> position<span class="op">.</span>Unit<span class="op">();</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1" aria-label="code-block-11-5"></a><span class="op">};</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1" aria-label="code-block-11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1" aria-label="code-block-11-7"></a><span class="co">// Get distance in eta-phi space between 2 3-vectors</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1" aria-label="code-block-11-8"></a><span class="co">//   --&gt; For matching tracks and clusters</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1" aria-label="code-block-11-9"></a><span class="kw">auto</span> get_distance <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> ROOT<span class="op">::</span>Math<span class="op">::</span>XYZVector<span class="op">&amp;</span> vec_1<span class="op">,</span> <span class="at">const</span> ROOT<span class="op">::</span>Math<span class="op">::</span>XYZVector<span class="op">&amp;</span> vec_2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1" aria-label="code-block-11-10"></a>  <span class="cf">return</span> <span class="bu">std::</span>hypot<span class="op">(</span>vec_1<span class="op">.</span>Eta<span class="op">()</span> <span class="op">-</span> vec_2<span class="op">.</span>Eta<span class="op">(),</span> vec_1<span class="op">.</span>Phi<span class="op">()</span> <span class="op">-</span> vec_2<span class="op">.</span>Phi<span class="op">());</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1" aria-label="code-block-11-11"></a><span class="op">};</span></span></code></pre>
+</div>
+<p>Add these alongside the helper functions that we started with. Now,
+we’re going to loop over our tracks and try to see which (if any of
+them) match up to clusters in our central barrel EM calorimeter. We’ll
+also initialise a vector to fill with any candidates we end up with:</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" tabindex="-1" aria-label="code-block-12-1"></a><span class="bu">std::</span>vector<span class="op">&lt;</span>edm4eic<span class="op">::</span>Track<span class="op">&gt;</span> rec_electrons<span class="op">;</span> <span class="co">// An array we'll fill with our candidate elctrons/positrons</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1" aria-label="code-block-12-2"></a><span class="bu">std::</span>set<span class="op">&lt;</span>podio<span class="op">::</span>ObjectID<span class="op">,</span> <span class="kw">decltype</span><span class="op">(</span>compare_object_ids<span class="op">)&gt;</span> used_clusters<span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1" aria-label="code-block-12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1" aria-label="code-block-12-4"></a><span class="co">// Begin our loop over tracks</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1" aria-label="code-block-12-5"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> track <span class="op">:</span> tracks<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1" aria-label="code-block-12-6"></a>  <span class="at">const</span> <span class="kw">auto</span>  trk_mom <span class="op">=</span> convert_vector_float<span class="op">(</span>track<span class="op">.</span>getMomentum<span class="op">());</span> <span class="co">// Take the track and turn it into a vector</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1" aria-label="code-block-12-7"></a>  <span class="at">const</span> <span class="dt">float</span> trk_eta <span class="op">=</span> trk_mom<span class="op">.</span>Eta<span class="op">();</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1" aria-label="code-block-12-8"></a>  <span class="at">const</span> <span class="dt">float</span> trk_mag <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span>trk_mom<span class="op">.</span>Mag2<span class="op">());</span>  <span class="co">// Mag() isn't implemented for XYZVectors</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1" aria-label="code-block-12-9"></a></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1" aria-label="code-block-12-10"></a>  <span class="dt">float</span> best_distance <span class="op">=</span> <span class="fl">999.0</span><span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1" aria-label="code-block-12-11"></a>  <span class="bu">std::</span>optional<span class="op">&lt;</span>edm4eic<span class="op">::</span>Cluster<span class="op">&gt;</span> best_match<span class="op">;</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1" aria-label="code-block-12-12"></a></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1" aria-label="code-block-12-13"></a>  <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> cluster <span class="op">:</span> clusters_cen<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1" aria-label="code-block-12-14"></a>    <span class="cf">if</span> <span class="op">(</span>used_clusters<span class="op">.</span>contains<span class="op">(</span>cluster<span class="op">.</span>getObjectID<span class="op">()))</span> <span class="op">{</span> <span class="co">// If we've already matched this cluster, skip it</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1" aria-label="code-block-12-15"></a>      <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1" aria-label="code-block-12-16"></a>    <span class="op">}</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1" aria-label="code-block-12-17"></a></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1" aria-label="code-block-12-18"></a>    <span class="at">const</span> <span class="kw">auto</span>  clust_pos <span class="op">=</span> convert_vector_float<span class="op">(</span>cluster<span class="op">.</span>getPosition<span class="op">());</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1" aria-label="code-block-12-19"></a>    <span class="at">const</span> <span class="kw">auto</span>  clust_mom <span class="op">=</span> get_momentum<span class="op">(</span>clust_pos<span class="op">,</span> cluster<span class="op">.</span>getEnergy<span class="op">());</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1" aria-label="code-block-12-20"></a>    <span class="at">const</span> <span class="dt">float</span> distance <span class="op">=</span> get_distance<span class="op">(</span>trk_mom<span class="op">,</span> clust_mom<span class="op">);</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1" aria-label="code-block-12-21"></a>    <span class="cf">if</span> <span class="op">((</span>distance <span class="op">&lt;</span> match_cut<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>distance <span class="op">&lt;</span> best_distance<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1" aria-label="code-block-12-22"></a>      best_distance <span class="op">=</span> distance<span class="op">;</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1" aria-label="code-block-12-23"></a>      best_match    <span class="op">=</span> cluster<span class="op">;</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1" aria-label="code-block-12-24"></a>      used_clusters<span class="op">.</span>insert<span class="op">(</span>cluster<span class="op">.</span>getObjectID<span class="op">());</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1" aria-label="code-block-12-25"></a>    <span class="op">}</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1" aria-label="code-block-12-26"></a>  <span class="op">}</span> <span class="co">// End loop over central barrel EM calorimeter</span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1" aria-label="code-block-12-27"></a></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1" aria-label="code-block-12-28"></a>  <span class="co">// Compare track vs. matched cluster, identify e- or e+ candidates ------------</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1" aria-label="code-block-12-29"></a>  <span class="cf">if</span> <span class="op">(</span>best_match<span class="op">.</span>has_value<span class="op">())</span> <span class="op">{</span> <span class="co">// Check something was actually matched</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1" aria-label="code-block-12-30"></a>    cout <span class="op">&lt;&lt;</span> trk_mag <span class="op">&lt;&lt;</span> endl<span class="op">;</span> <span class="co">// Print the track magnitude - could fill a hist in here :)</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1" aria-label="code-block-12-31"></a>  <span class="op">}</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1" aria-label="code-block-12-32"></a>  <span class="cf">else</span><span class="op">{</span></span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1" aria-label="code-block-12-33"></a>    <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1" aria-label="code-block-12-34"></a>  <span class="op">}</span></span>
+<span id="cb12-35"><a href="#cb12-35" tabindex="-1" aria-label="code-block-12-35"></a></span>
+<span id="cb12-36"><a href="#cb12-36" tabindex="-1" aria-label="code-block-12-36"></a>  <span class="at">const</span> <span class="dt">float</span> match_ene <span class="op">=</span> best_match<span class="op">.</span>value<span class="op">().</span>getEnergy<span class="op">();</span></span>
+<span id="cb12-37"><a href="#cb12-37" tabindex="-1" aria-label="code-block-12-37"></a>  <span class="at">const</span> <span class="dt">float</span> trk_ep    <span class="op">=</span> match_ene <span class="op">/</span> trk_mag<span class="op">;</span> <span class="co">// Calculate an E/p ratio for the track. For electrons, this should be close to 1</span></span>
+<span id="cb12-38"><a href="#cb12-38" tabindex="-1" aria-label="code-block-12-38"></a>  <span class="cf">if</span> <span class="op">(</span>trk_mag <span class="op">&gt;</span> <span class="fl">0.0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-39"><a href="#cb12-39" tabindex="-1" aria-label="code-block-12-39"></a>    cout <span class="op">&lt;&lt;</span> trk_ep <span class="op">&lt;&lt;</span> endl<span class="op">;</span> <span class="co">// Print the E/p value out - Could fill a hist in here :)</span></span>
+<span id="cb12-40"><a href="#cb12-40" tabindex="-1" aria-label="code-block-12-40"></a>  <span class="op">}</span></span>
+<span id="cb12-41"><a href="#cb12-41" tabindex="-1" aria-label="code-block-12-41"></a>  <span class="cf">else</span><span class="op">{</span></span>
+<span id="cb12-42"><a href="#cb12-42" tabindex="-1" aria-label="code-block-12-42"></a>    <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb12-43"><a href="#cb12-43" tabindex="-1" aria-label="code-block-12-43"></a>  <span class="op">}</span></span>
+<span id="cb12-44"><a href="#cb12-44" tabindex="-1" aria-label="code-block-12-44"></a></span>
+<span id="cb12-45"><a href="#cb12-45" tabindex="-1" aria-label="code-block-12-45"></a>  <span class="cf">if</span> <span class="op">((</span>trk_ep <span class="op">&gt;</span> ep_min<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>trk_ep <span class="op">&lt;</span> ep_max<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb12-46"><a href="#cb12-46" tabindex="-1" aria-label="code-block-12-46"></a>    rec_electrons<span class="op">.</span>push_back<span class="op">(</span>track<span class="op">);</span> <span class="co">// Add the e+ or e- candidate to our vector array</span></span>
+<span id="cb12-47"><a href="#cb12-47" tabindex="-1" aria-label="code-block-12-47"></a>  <span class="op">}</span></span>
+<span id="cb12-48"><a href="#cb12-48" tabindex="-1" aria-label="code-block-12-48"></a></span>
+<span id="cb12-49"><a href="#cb12-49" tabindex="-1" aria-label="code-block-12-49"></a><span class="op">}</span> <span class="co">// End of loop over tracks</span></span></code></pre>
+</div>
+<p>Add this block within our event loop (after the frame has been
+acquired and the getters set etc).</p>
+<div id="challenge-add-the-endcaps-and-some-plots" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="challenge-add-the-endcaps-and-some-plots" class="callout-inner">
+<h3 class="callout-title">Challenge: Add the endcaps and some plots</h3>
+<div class="callout-content">
+<p>Our block of code above only checks the barrel electromagnetic
+calorimeter. We added getters earlier for the endcap electromagnetic
+calorimeters too. Add routines that check the positive and negative end
+cap calorimeters for track/cluster matches.</p>
+<p>Add some histograms and plot for all matched track/clusters in your
+events that look like electrons/positrons in the central detector:</p>
+<ul>
+<li>1D histograms of:
+<ul>
+<li>The E/p ratio calculated</li>
+<li><span class="math inline">\(\eta\)</span></li>
+<li><span class="math inline">\(P\)</span></li>
+</ul>
+</li>
+<li>2D histograms of:
+<ul>
+<li>The E/p ratio vs <span class="math inline">\(\eta\)</span>
+</li>
+<li>
+<span class="math inline">\(P\)</span> vs <span class="math inline">\(\eta\)</span>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="jpsi-candidates">
+<span class="math inline">\(J/\psi\)</span> Candidates<a class="anchor" aria-label="anchor" href="#jpsi-candidates"></a>
+</h3>
+<p>Now that we’ve identified some potential tracks that <em>look</em>
+like electrons and positrons, we can try and combine them to see if any
+look like they could come from the decay of a <span class="math inline">\(J/\psi\)</span>.</p>
+<p>We’ll do something similar to our clusters where we retain an array
+of clusters we’ve checked, and also define vector to store candidates
+in:</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="co">// Get 4-vector for a track with a certain mass</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1" aria-label="code-block-13-2"></a><span class="kw">auto</span> get_lorentz_track <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> edm4eic<span class="op">::</span>Track<span class="op">&amp;</span> track<span class="op">,</span> <span class="at">const</span> <span class="dt">float</span> mass<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1" aria-label="code-block-13-3"></a>  <span class="cf">return</span> ROOT<span class="op">::</span>Math<span class="op">::</span>PxPyPzM4D<span class="op">(</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1" aria-label="code-block-13-4"></a>    track<span class="op">.</span>getMomentum<span class="op">().</span>x<span class="op">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1" aria-label="code-block-13-5"></a>    track<span class="op">.</span>getMomentum<span class="op">().</span>y<span class="op">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1" aria-label="code-block-13-6"></a>    track<span class="op">.</span>getMomentum<span class="op">().</span>z<span class="op">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1" aria-label="code-block-13-7"></a>    mass</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1" aria-label="code-block-13-8"></a>    <span class="op">);</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1" aria-label="code-block-13-9"></a><span class="op">};</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1" aria-label="code-block-13-10"></a><span class="bu">std::</span>set<span class="op">&lt;</span>podio<span class="op">::</span>ObjectID<span class="op">,</span> <span class="kw">decltype</span><span class="op">(</span>compare_object_ids<span class="op">)&gt;</span> used_electrons<span class="op">;</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1" aria-label="code-block-13-11"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>pair<span class="op">&lt;</span>edm4eic<span class="op">::</span>Track<span class="op">,</span> edm4eic<span class="op">::</span>Track<span class="op">&gt;&gt;</span> jpsi_candidates<span class="op">;</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1" aria-label="code-block-13-12"></a></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1" aria-label="code-block-13-13"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> electron_1 <span class="op">:</span> rec_electrons<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1" aria-label="code-block-13-14"></a>  <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> electron_2 <span class="op">:</span> rec_electrons<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1" aria-label="code-block-13-15"></a>    <span class="cf">if</span> <span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">()</span> <span class="op">==</span> electron_2<span class="op">.</span>getObjectID<span class="op">())</span> <span class="op">{</span> <span class="co">// Don't try to combine things with themselves</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1" aria-label="code-block-13-16"></a>      <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1" aria-label="code-block-13-17"></a>    <span class="op">}</span></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1" aria-label="code-block-13-18"></a>    <span class="cf">if</span> <span class="op">(</span>used_electrons<span class="op">.</span>contains<span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">()))</span> <span class="op">{</span> <span class="co">// If we've looked at our first electron, move on</span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1" aria-label="code-block-13-19"></a>      <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1" aria-label="code-block-13-20"></a>    <span class="op">}</span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1" aria-label="code-block-13-21"></a>    <span class="cf">if</span> <span class="op">(</span>used_electrons<span class="op">.</span>contains<span class="op">(</span>electron_2<span class="op">.</span>getObjectID<span class="op">()))</span> <span class="op">{</span> <span class="co">// If we've looked at our second electron, move on</span></span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1" aria-label="code-block-13-22"></a>      <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1" aria-label="code-block-13-23"></a>    <span class="op">}</span></span>
+<span id="cb13-24"><a href="#cb13-24" tabindex="-1" aria-label="code-block-13-24"></a></span>
+<span id="cb13-25"><a href="#cb13-25" tabindex="-1" aria-label="code-block-13-25"></a>    <span class="at">const</span> <span class="kw">auto</span> lorentz_1 <span class="op">=</span> get_lorentz_track<span class="op">(</span>electron_1<span class="op">,</span> <span class="fl">0.000511</span><span class="op">);</span></span>
+<span id="cb13-26"><a href="#cb13-26" tabindex="-1" aria-label="code-block-13-26"></a>    <span class="at">const</span> <span class="kw">auto</span> lorentz_2 <span class="op">=</span> get_lorentz_track<span class="op">(</span>electron_1<span class="op">,</span> <span class="fl">0.000511</span><span class="op">);</span></span>
+<span id="cb13-27"><a href="#cb13-27" tabindex="-1" aria-label="code-block-13-27"></a></span>
+<span id="cb13-28"><a href="#cb13-28" tabindex="-1" aria-label="code-block-13-28"></a>    <span class="at">const</span> ROOT<span class="op">::</span>Math<span class="op">::</span>PxPyPzE4D total_mom<span class="op">(</span> <span class="co">// Sum up momentum components</span></span>
+<span id="cb13-29"><a href="#cb13-29" tabindex="-1" aria-label="code-block-13-29"></a>      lorentz_1<span class="op">.</span>Px<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Px<span class="op">(),</span></span>
+<span id="cb13-30"><a href="#cb13-30" tabindex="-1" aria-label="code-block-13-30"></a>      lorentz_1<span class="op">.</span>Py<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Py<span class="op">(),</span></span>
+<span id="cb13-31"><a href="#cb13-31" tabindex="-1" aria-label="code-block-13-31"></a>      lorentz_1<span class="op">.</span>Pz<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Pz<span class="op">(),</span></span>
+<span id="cb13-32"><a href="#cb13-32" tabindex="-1" aria-label="code-block-13-32"></a>      lorentz_1<span class="op">.</span>E<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>E<span class="op">()</span></span>
+<span id="cb13-33"><a href="#cb13-33" tabindex="-1" aria-label="code-block-13-33"></a>    <span class="op">);</span></span>
+<span id="cb13-34"><a href="#cb13-34" tabindex="-1" aria-label="code-block-13-34"></a>    <span class="at">const</span> <span class="dt">float</span> inv_mass <span class="op">=</span> total_mom<span class="op">.</span>M<span class="op">();</span> <span class="co">// Calculate the invariant mass</span></span>
+<span id="cb13-35"><a href="#cb13-35" tabindex="-1" aria-label="code-block-13-35"></a></span>
+<span id="cb13-36"><a href="#cb13-36" tabindex="-1" aria-label="code-block-13-36"></a>    <span class="cf">if</span> <span class="op">((</span>inv_mass <span class="op">&gt;</span> mass_min<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>inv_mass <span class="op">&lt;</span> mass_max<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb13-37"><a href="#cb13-37" tabindex="-1" aria-label="code-block-13-37"></a>      jpsi_candidates<span class="op">.</span>push_back<span class="op">(</span></span>
+<span id="cb13-38"><a href="#cb13-38" tabindex="-1" aria-label="code-block-13-38"></a>        <span class="op">{</span>electron_1<span class="op">,</span> electron_2<span class="op">}</span> <span class="co">// If invariant mass of pair is within window, add candidate electron tracks to our candidate vector</span></span>
+<span id="cb13-39"><a href="#cb13-39" tabindex="-1" aria-label="code-block-13-39"></a>      <span class="op">);</span></span>
+<span id="cb13-40"><a href="#cb13-40" tabindex="-1" aria-label="code-block-13-40"></a>    used_electrons<span class="op">.</span>insert<span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">());</span></span>
+<span id="cb13-41"><a href="#cb13-41" tabindex="-1" aria-label="code-block-13-41"></a>    used_electrons<span class="op">.</span>insert<span class="op">(</span>electron_2<span class="op">.</span>getObjectID<span class="op">());</span></span>
+<span id="cb13-42"><a href="#cb13-42" tabindex="-1" aria-label="code-block-13-42"></a>    <span class="op">}</span></span>
+<span id="cb13-43"><a href="#cb13-43" tabindex="-1" aria-label="code-block-13-43"></a>  <span class="op">}</span> <span class="co">// End loop over 2nd electron</span></span>
+<span id="cb13-44"><a href="#cb13-44" tabindex="-1" aria-label="code-block-13-44"></a><span class="op">}</span> <span class="co">// End loop over 1st electron</span></span></code></pre>
+</div>
+<div id="challenge-plot-and-fit-invariant-mass" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="challenge-plot-and-fit-invariant-mass" class="callout-inner">
+<h3 class="callout-title">Challenge: Plot and fit invariant mass</h3>
+<div class="callout-content">
+<p>For events where a <span class="math inline">\(J/\psi\)</span>
+candidate is found, fill a histogram with the calculated invariant mass
+from the <span class="math inline">\(e^{+}e^{-}\)</span> pair.</p>
+<p>Create and fill a 2D histogram of <span class="math inline">\(\eta\)</span> vs <span class="math inline">\(P\)</span> for the candidate reconstructed <span class="math inline">\(J/\psi\)</span>’s found with this routine.</p>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
