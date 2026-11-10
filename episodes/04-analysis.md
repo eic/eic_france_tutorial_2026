@@ -113,7 +113,7 @@ As is, this won't really do anything yet. **But**, we can check it runs via:
 root -b -q EIC_France_Analysis.cxx
 ```
 
-if your paths are OK, this should run without issue (and do nothing of course),
+if your paths are OK, this should run without issue (and do nothing of course).
 
 :::::::::::::::::::::::::::::::::::::::::::::::::: callout
 
@@ -129,11 +129,99 @@ A script that doesn't do anything isn't particularly useful (hey it could be wor
 
 We'll start by adding a `getter` to get some info from our file.
 
+```C++
+ auto& MCparticles = frame.get<edm4hep::MCParticleCollection>("MCParticles");
+```
+
+add this any point after the frame is defined, within the event loop. We can add other collections in the same way as we want/need.
+
+### Adding some helpers
+
+We'll also add some helper functions that will be used a little later on:
+
+```C++
+// Convert edm4hep::Vector3f into a ROOT::Math::XZYVector
+//   --> Useful for some vector calculations
+auto convert_vector_float = [](const edm4hep::Vector3f& edm_vec) {
+  return ROOT::Math::XYZVector(edm_vec.x, edm_vec.y, edm_vec.z);
+};
+
+// Convert edm4hep::Vector3d into a ROOT::Math::XZYVector
+//   --> edm4hep stores momentum values as doubles, not floats
+auto convert_vector_double = [](const edm4hep::Vector3d& edm_vec) {
+  return ROOT::Math::XYZVector(edm_vec.x, edm_vec.y, edm_vec.z);
+};
+
+// Get 4-vector for a particle
+//   --> Will need to compare rec vs. sim momentum/eta 
+auto get_lorentz_particle = [](const edm4hep::MCParticle& MCparticle) {
+  return ROOT::Math::PxPyPzM4D(
+    particle.getMomentum().x,
+    particle.getMomentum().y,
+    particle.getMomentum().z,
+    particle.getMass()
+  );
+};
+
+// Compare 2 object IDs
+//   --> Needed for bookkeeping
+auto compare_object_ids = [](const podio::ObjectID& lhs, const podio::ObjectID& rhs) {
+  if (lhs.collectionID == rhs.collectionID) {
+    return (lhs.index < rhs.index);
+  } else {
+    return (lhs.collectionID < rhs.collectionID);
+  }
+};
+```
+
+Add these after the getter we added above.
+
 ## MCParticles
 
-### Identifying $J/\psi$ Particles
+Now that we've added a getter and our helper functions, we can actually try and get some info and do something with it. Our getter got the `MCParticles` collection for our frame (i.e. our event). We can loop over all particles in this collection and create 4-vectors for the MCParticles in our event:
 
-## Associations
+```C++
+for (const auto& MCparticle : MCparticles) {
+  const auto MCpart_lorentz = get_lorentz_particle(MCparticle);
+  cout << MCparticle.getPDG << "   " << MCpart_lorentz.Px() << endl;
+}
+```
+
+Add this after all of our functions we've just added (still within the event loop). Now re-run the macro, we should now get some output.
+
+### Histograms
+
+We probably *don't* just want to print lots of information to screen though. More useful would be to make some plots of some sort, so let's do that. Let's fill some histograms with our information. To begin with, let's define a histogram:
+
+```C++
+TH1D* h1_MCPart_Px = new TH1D("h1_MCPart_Px", "P_{xMC};P_{xMC}/(GeV/c);Entries", 200, -5, 5);
+```
+
+Add this definition *before* the event loop begins. We've define a 1D histogram to fill with our MC particle $P_{x}$ values here. So let's then fill it with this information:
+
+```C++
+  h1_MCPart_Px->Fill(MCpart_lorentz.Px());
+```
+
+put this after the cout statement before (or replace the statement with it).
+
+::::::::::::::::::::::::::::::::::::: challenge
+### Challenge: Add some extra histograms
+
+Add and fill the following histograms to the code:
+
+1. Py, Pz, P and E
+2. $\eta$
+3. $\theta$
+4. $\theta for **electrons** only
+
+**Hint** - Think carefully about the number of bins and the binning range of these new hisotgrams
+
+:::::::::::::::::::::::::::::::::
+
+### Identifying $J/\psi$ Particles **and** Daughters
+
+So far, much of this probably looks like things we could probably do straightforwardly in ROOT without dealing with PODIO. We'll now look at a very quick demonstration of how we can use PODIO very nicely to pick out something of interest to us. We will use PODIO to quickly identify the decay products of $J/\psi$ particles
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
