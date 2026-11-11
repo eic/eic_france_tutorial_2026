@@ -157,7 +157,7 @@ auto convert_vector_double = [](const edm4hep::Vector3d& edm_vec) {
 
 // Get 4-vector for a particle
 //   --> Will need to compare rec vs. sim momentum/eta 
-auto get_lorentz_particle = [](const edm4hep::MCParticle& MCparticle) {
+auto get_lorentz_particle = [](const edm4hep::MCParticle& particle) {
   return ROOT::Math::PxPyPzM4D(
     particle.getMomentum().x,
     particle.getMomentum().y,
