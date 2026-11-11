@@ -454,7 +454,7 @@ code below:</p>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1" aria-label="code-block-2-22"></a>    <span class="kw">auto</span> frame <span class="op">=</span> podio<span class="op">::</span>Frame<span class="op">(</span><span class="bu">std::</span>move<span class="op">(</span>entry<span class="op">));</span></span>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1" aria-label="code-block-2-23"></a>  <span class="op">}</span>  <span class="co">// end event loop</span></span>
 <span id="cb2-24"><a href="#cb2-24" tabindex="-1" aria-label="code-block-2-24"></a></span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1" aria-label="code-block-2-25"></a>  <span class="co">// Calculate efficiencies and save output ===================================</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1" aria-label="code-block-2-25"></a>  <span class="co">// Save output ===================================</span></span>
 <span id="cb2-26"><a href="#cb2-26" tabindex="-1" aria-label="code-block-2-26"></a></span>
 <span id="cb2-27"><a href="#cb2-27" tabindex="-1" aria-label="code-block-2-27"></a>  output<span class="op">-&gt;</span>cd<span class="op">();</span></span>
 <span id="cb2-28"><a href="#cb2-28" tabindex="-1" aria-label="code-block-2-28"></a>  output<span class="op">-&gt;</span>Write<span class="op">();</span></span>
@@ -667,16 +667,17 @@ particles:</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a>  <span class="cf">if</span> <span class="op">(</span>particle<span class="op">.</span>getPDG<span class="op">()</span> <span class="op">==</span> <span class="dv">443</span><span class="op">)</span> <span class="op">{</span> <span class="co">// J/Psi is PDG 443</span></span>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a>  <span class="cf">if</span> <span class="op">(</span>MCparticle<span class="op">.</span>getPDG<span class="op">()</span> <span class="op">==</span> <span class="dv">443</span><span class="op">)</span> <span class="op">{</span> <span class="co">// J/Psi is PDG 443</span></span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1" aria-label="code-block-10-2"></a>  <span class="bu">std::</span>vector<span class="op">&lt;</span>edm4hep<span class="op">::</span>MCParticle<span class="op">&gt;</span> decays<span class="op">;</span> <span class="co">// An array we will store our decay products in</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1" aria-label="code-block-10-3"></a>  <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> daughter <span class="op">:</span> particle<span class="op">.</span>getDaughters<span class="op">())</span> <span class="op">{</span> <span class="co">// Loop over our J/Psi daughter particles</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1" aria-label="code-block-10-3"></a>  <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> daughter <span class="op">:</span> MCparticle<span class="op">.</span>getDaughters<span class="op">())</span> <span class="op">{</span> <span class="co">// Loop over our J/Psi daughter particles</span></span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1" aria-label="code-block-10-4"></a>    decays<span class="op">.</span>push_back<span class="op">(</span>daughter<span class="op">);</span> <span class="co">// Add the daughter particles to our vector</span></span>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1" aria-label="code-block-10-5"></a></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1" aria-label="code-block-10-6"></a>    <span class="at">const</span> <span class="kw">auto</span>  daug_mom <span class="op">=</span> convert_vector_double<span class="op">(</span>particle<span class="op">.</span>getMomentum<span class="op">());</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1" aria-label="code-block-10-7"></a>    <span class="at">const</span> <span class="dt">float</span> daug_eta <span class="op">=</span> ele_mom<span class="op">.</span>Eta<span class="op">();</span></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1" aria-label="code-block-10-8"></a>    <span class="at">const</span> <span class="dt">float</span> daug_mag <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span>ele_mom<span class="op">.</span>Mag2<span class="op">());</span>  <span class="co">// Mag() isn't implemented for XYZVector</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1" aria-label="code-block-10-6"></a>    <span class="at">const</span> <span class="kw">auto</span>  daug_mom <span class="op">=</span> convert_vector_double<span class="op">(</span>MCparticle<span class="op">.</span>getMomentum<span class="op">());</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1" aria-label="code-block-10-7"></a>    <span class="at">const</span> <span class="dt">float</span> daug_eta <span class="op">=</span> daug_mom<span class="op">.</span>Eta<span class="op">();</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1" aria-label="code-block-10-8"></a>    <span class="at">const</span> <span class="dt">float</span> daug_mag <span class="op">=</span> <span class="bu">std::</span>sqrt<span class="op">(</span>daug_mom<span class="op">.</span>Mag2<span class="op">());</span>  <span class="co">// Mag() isn't implemented for XYZVector</span></span>
 <span id="cb10-9"><a href="#cb10-9" tabindex="-1" aria-label="code-block-10-9"></a>    cout <span class="op">&lt;&lt;</span> daughter<span class="op">.</span>getPDG<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"   "</span> <span class="op">&lt;&lt;</span> daug_eta <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1" aria-label="code-block-10-10"></a>  <span class="op">}</span></span></code></pre>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1" aria-label="code-block-10-10"></a>  <span class="op">}</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1" aria-label="code-block-10-11"></a><span class="op">}</span></span></code></pre>
 </div>
 <p>add this block after looping over particles in a frame. Now when we
 run our code, we should print out the PDG code and <span class="math inline">\(\eta\)</span> value for all of our produced <span class="math inline">\(J/\psi\)</span> daughters.</p>
@@ -689,8 +690,8 @@ run our code, we should print out the PDG code and <span class="math inline">\(\
 <h3 class="callout-title">Challenge: Find some leptonic decays</h3>
 <div class="callout-content">
 <p>Now that we have the block of code to pick out the daughters of the
-produced <span class="math inline">\(J/Psi\)</span>, let’s take a closer
-look. Add in:</p>
+produced <span class="math inline">\(J/\psi\)</span>, let’s take a
+closer look. Add in:</p>
 <ul><li>A histogram of the momentum, <span class="math inline">\(P\)</span>,
 of all daughter particles</li>
 <li>A 2D histogram of <span class="math inline">\(\eta\)</span> for the
