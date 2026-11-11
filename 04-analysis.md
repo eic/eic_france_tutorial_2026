@@ -197,7 +197,7 @@ Add this after all of our functions we've just added (still within the event loo
 We probably *don't* just want to print lots of information to screen though. More useful would be to make some plots of some sort, so let's do that. Let's fill some histograms with our information. To begin with, let's define a histogram:
 
 ```C++
-TH1D* h1_MCPart_Px = new TH1D("h1_MCPart_Px", "P_{xMC};P_{xMC}/(GeV/c);Entries", 200, -5, 5);
+TH1D* h1_MCPart_Px = new TH1D("h1_MCPart_Px", "P_{xMC};P_{xMC}/(GeV/c);Entries", 200, -1, 1);
 ```
 
 Add this definition *before* the event loop begins. We've define a 1D histogram to fill with our MC particle $P_{x}$ values here. So let's then fill it with this information:
@@ -239,7 +239,7 @@ to print the status value.
 ::::::::::::::::::::::::::::::::::::: challenge
 ### Challenge: Replot our histogramss
 
-For the histograms we created and filled before, fill them for **all non-beam particles**.
+For the histograms we created and filled before, fill them only for **all non-beam particles** instead.
 
 Make a separate set of histograms for **all beam particles** and fill them with the incoming electron and ion beam information.
 
