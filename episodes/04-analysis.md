@@ -90,7 +90,7 @@ void EIC_France_Analysis(
     auto frame = podio::Frame(std::move(entry));
   }  // end event loop
 
-  // Calculate efficiencies and save output ===================================
+  // Save output ===================================
 
   output->cd();
   output->Write();
@@ -250,16 +250,17 @@ Make a separate set of histograms for **all beam particles** and fill them with 
 So far, much of this probably looks like things we could probably do straightforwardly in ROOT without dealing with PODIO. We'll now look at a very quick demonstration of how we can use PODIO very nicely to pick out something of interest to us. We will use PODIO to quickly identify the decay products of $J/\psi$ particles:
 
 ```C++
-  if (particle.getPDG() == 443) { // J/Psi is PDG 443
+  if (MCparticle.getPDG() == 443) { // J/Psi is PDG 443
   std::vector<edm4hep::MCParticle> decays; // An array we will store our decay products in
-  for (const auto& daughter : particle.getDaughters()) { // Loop over our J/Psi daughter particles
+  for (const auto& daughter : MCparticle.getDaughters()) { // Loop over our J/Psi daughter particles
     decays.push_back(daughter); // Add the daughter particles to our vector
 
-    const auto  daug_mom = convert_vector_double(particle.getMomentum());
-    const float daug_eta = ele_mom.Eta();
-    const float daug_mag = std::sqrt(ele_mom.Mag2());  // Mag() isn't implemented for XYZVector
+    const auto  daug_mom = convert_vector_double(MCparticle.getMomentum());
+    const float daug_eta = daug_mom.Eta();
+    const float daug_mag = std::sqrt(daug_mom.Mag2());  // Mag() isn't implemented for XYZVector
     cout << daughter.getPDG() << "   " << daug_eta << endl;
   }
+}
 ```
 
 add this block after looping over particles in a frame. Now when we run our code, we should print out the PDG code and $\eta$ value for all of our produced $J/\psi$ daughters.
@@ -267,7 +268,7 @@ add this block after looping over particles in a frame. Now when we run our code
 ::::::::::::::::::::::::::::::::::::: challenge
 ### Challenge: Find some leptonic decays
 
-Now that we have the block of code to pick out the daughters of the produced $J/Psi$, let's take a closer look. Add in:
+Now that we have the block of code to pick out the daughters of the produced $J/\psi$, let's take a closer look. Add in:
 
 - A histogram of the momentum, $P$, of all daughter particles
 - A 2D histogram of $\eta$ for the decay products vs $P_{J/\psi}$ - the momentum of the initial $J/\psi$
