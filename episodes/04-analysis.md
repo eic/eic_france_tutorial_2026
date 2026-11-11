@@ -110,13 +110,13 @@ Equally, the input and output filenames are **hardcoded** in this script. Modify
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-As is, this won't really do anything yet. **But**, we can check it runs via:
+As is, this won't really do anything yet except make a new file, `EIC_France_Analysis_Out.root`, which should be blank. **But**, we can check it runs via:
 
 ```bash
 root -b -q EIC_France_Analysis.cxx
 ```
 
-if your paths are OK, this should run without issue (and do nothing of course).
+if your paths are OK, this should run without issue (and do nothing except make a new empty file of course).
 
 :::::::::::::::::::::::::::::::::::::::::::::::::: callout
 
