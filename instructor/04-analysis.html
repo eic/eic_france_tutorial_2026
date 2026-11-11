@@ -541,7 +541,7 @@ on:</p>
 <span id="cb5-12"><a href="#cb5-12" tabindex="-1" aria-label="code-block-5-12"></a></span>
 <span id="cb5-13"><a href="#cb5-13" tabindex="-1" aria-label="code-block-5-13"></a><span class="co">// Get 4-vector for a particle</span></span>
 <span id="cb5-14"><a href="#cb5-14" tabindex="-1" aria-label="code-block-5-14"></a><span class="co">//   --&gt; Will need to compare rec vs. sim momentum/eta </span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1" aria-label="code-block-5-15"></a><span class="kw">auto</span> get_lorentz_particle <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> edm4hep<span class="op">::</span>MCParticle<span class="op">&amp;</span> MCparticle<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1" aria-label="code-block-5-15"></a><span class="kw">auto</span> get_lorentz_particle <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> edm4hep<span class="op">::</span>MCParticle<span class="op">&amp;</span> particle<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-16"><a href="#cb5-16" tabindex="-1" aria-label="code-block-5-16"></a>  <span class="cf">return</span> ROOT<span class="op">::</span>Math<span class="op">::</span>PxPyPzM4D<span class="op">(</span></span>
 <span id="cb5-17"><a href="#cb5-17" tabindex="-1" aria-label="code-block-5-17"></a>    particle<span class="op">.</span>getMomentum<span class="op">().</span>x<span class="op">,</span></span>
 <span id="cb5-18"><a href="#cb5-18" tabindex="-1" aria-label="code-block-5-18"></a>    particle<span class="op">.</span>getMomentum<span class="op">().</span>y<span class="op">,</span></span>
