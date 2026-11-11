@@ -1396,7 +1396,7 @@ with, let’s define a histogram:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a>TH1D<span class="op">*</span> h1_MCPart_Px <span class="op">=</span> <span class="kw">new</span> TH1D<span class="op">(</span><span class="st">"h1_MCPart_Px"</span><span class="op">,</span> <span class="st">"P_{xMC};P_{xMC}/(GeV/c);Entries"</span><span class="op">,</span> <span class="dv">200</span><span class="op">,</span> <span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">5</span><span class="op">);</span></span></code></pre>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a>TH1D<span class="op">*</span> h1_MCPart_Px <span class="op">=</span> <span class="kw">new</span> TH1D<span class="op">(</span><span class="st">"h1_MCPart_Px"</span><span class="op">,</span> <span class="st">"P_{xMC};P_{xMC}/(GeV/c);Entries"</span><span class="op">,</span> <span class="dv">200</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span></code></pre>
 </div>
 <p>Add this definition <em>before</em> the event loop begins. We’ve
 define a 1D histogram to fill with our MC particle <span class="math inline">\(P_{x}\)</span> values here. So let’s then fill it
@@ -1456,8 +1456,8 @@ by using the <code>GeneratorStatus</code> value of our particles.</p>
 <div id="challenge-replot-our-histogramss" class="callout-inner">
 <h3 class="callout-title">Challenge: Replot our histogramss</h3>
 <div class="callout-content">
-<p>For the histograms we created and filled before, fill them for
-<strong>all non-beam particles</strong>.</p>
+<p>For the histograms we created and filled before, fill them only for
+<strong>all non-beam particles</strong> instead.</p>
 <p>Make a separate set of histograms for <strong>all beam
 particles</strong> and fill them with the incoming electron and ion beam
 information.</p>
