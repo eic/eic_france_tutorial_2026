@@ -454,8 +454,36 @@ Create and fill a 2D histogram of $\eta$ vs $P$ for the candidate reconstructed 
 
 :::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::::::::::::::::::::::::::::::: callout
+
+### Getting all of our candidates
+
+For the last challenge here, you may wish to do this *after* you pair all your possible electrons. You could loop over the candidate J/$\psi$ pairs via:
+
+```C++
+for (const auto& [track_1, track_2] : jpsi_candidates) {
+... // Do something
+}
+```
+
+and remember you have helper functions that can act on EDM4EIC tracks (which is what track_1 and track_2 are here).
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## What next?
+
+This is probably all we'll have time to work through and play with in three hours, but some tasks you could consider trying next (and I would recommend checking [Derek's tutorial](https://eic.github.io/tutorial-track-cluster-matching/index.html) for some help):
+
+1. Try and determine the reconstruction efficiency of our scattered electron
+2. Check that the tracks we've matched up for our J/$\psi$ *actually* correspond to the correct two decay particles
+3. Investigate other decay branches
+4. Calculate (and plot) some kinematic variables, compare them to the MC truth values - E.g. $Q^{2}$, $t$, $x$, $y$ etc
+
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Point 1
+- We can use PODIO to get information from our collections in EICrecon output
+- Using PODIO, we can quickly link together objects
+  - E.g. Decay products with their parent
+  - MC truth info with reconstructed info
+- We can also quickly match track and cluster information using PODIO links 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
