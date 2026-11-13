@@ -1750,6 +1750,47 @@ from the <span class="math inline">\(e^{+}e^{-}\)</span> pair.</p>
 </div>
 </div>
 </div>
+<div id="getting-all-of-our-candidates" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="getting-all-of-our-candidates" class="callout-inner">
+<h3 class="callout-title">Getting all of our candidates</h3>
+<div class="callout-content">
+<p>For the last challenge here, you may wish to do this <em>after</em>
+you pair all your possible electrons. You could loop over the candidate
+J/<span class="math inline">\(\psi\)</span> pairs via:</p>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">C++<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c++" tabindex="0"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1" tabindex="-1" aria-label="code-block-15-1"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> <span class="op">[</span>track_1<span class="op">,</span> track_2<span class="op">]</span> <span class="op">:</span> jpsi_candidates<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1" aria-label="code-block-15-2"></a><span class="op">...</span> <span class="co">// Do something</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1" aria-label="code-block-15-3"></a><span class="op">}</span></span></code></pre>
+</div>
+<p>and remember you have helper functions that can act on EDM4EIC tracks
+(which is what track_1 and track_2 are here).</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="what-next">What next?<a class="anchor" aria-label="anchor" href="#what-next"></a>
+</h2>
+<hr class="half-width">
+<p>This is probably all we’ll have time to work through and play with in
+three hours, but some tasks you could consider trying next (and I would
+recommend checking <a href="https://eic.github.io/tutorial-track-cluster-matching/index.html" class="external-link">Derek’s
+tutorial</a> for some help):</p>
+<ol style="list-style-type: decimal">
+<li>Try and determine the reconstruction efficiency of our scattered
+electron</li>
+<li>Check that the tracks we’ve matched up for our J/<span class="math inline">\(\psi\)</span> <em>actually</em> correspond to the
+correct two decay particles</li>
+<li>Investigate other decay branches</li>
+<li>Calculate (and plot) some kinematic variables, compare them to the
+MC truth values - E.g. <span class="math inline">\(Q^{2}\)</span>, <span class="math inline">\(t\)</span>, <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>
+etc</li>
+</ol>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1758,7 +1799,16 @@ from the <span class="math inline">\(e^{+}e^{-}\)</span> pair.</p>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>Point 1</li>
+<li>We can use PODIO to get information from our collections in EICrecon
+output</li>
+<li>Using PODIO, we can quickly link together objects
+<ul>
+<li>E.g. Decay products with their parent</li>
+<li>MC truth info with reconstructed info</li>
+</ul>
+</li>
+<li>We can also quickly match track and cluster information using PODIO
+links</li>
 </ul>
 </div>
 </div>
@@ -1767,7 +1817,6 @@ from the <span class="math inline">\(e^{+}e^{-}\)</span> pair.</p>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</div>
 </section></section>
 </div>
     </main>
