@@ -187,7 +187,7 @@ void EIC_France_Analysis_C5_Checkpoint(
 	}
 
 	const auto lorentz_1 = get_lorentz_track(electron_1, 0.000511);
-	const auto lorentz_2 = get_lorentz_track(electron_1, 0.000511);
+	const auto lorentz_2 = get_lorentz_track(electron_2, 0.000511);
 
 	const ROOT::Math::PxPyPzE4D total_mom( // Sum up momentum components
 					       lorentz_1.Px() + lorentz_2.Px(),
