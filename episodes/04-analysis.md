@@ -408,6 +408,7 @@ auto get_lorentz_track = [](const edm4eic::Track& track, const float mass) {
 std::set<podio::ObjectID, decltype(compare_object_ids)> used_electrons;
 std::vector<std::pair<edm4eic::Track, edm4eic::Track>> jpsi_candidates;
 
+// Check all of our reconstructed electron like objects and try to pair them together                           
 for (const auto& electron_1 : rec_electrons) {
   for (const auto& electron_2 : rec_electrons) {
     if (electron_1.getObjectID() == electron_2.getObjectID()) { // Don't try to combine things with themselves
@@ -441,6 +442,8 @@ for (const auto& electron_1 : rec_electrons) {
   } // End loop over 2nd electron
 } // End loop over 1st electron
 ```
+
+Add this block within our event loop, but after our loop over all tracks.
 
 ::::::::::::::::::::::::::::::::::::: challenge
 ### Challenge: Plot invariant mass
