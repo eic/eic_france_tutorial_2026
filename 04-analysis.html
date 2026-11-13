@@ -326,7 +326,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Analysing Reconstructed Output</h1>
-        <p>Last updated on 2026-11-11 |
+        <p>Last updated on 2026-11-13 |
 
         <a href="https://github.com/eic/eic_france_tutorial_2026/edit/main/episodes/04-analysis.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -873,39 +873,42 @@ in:</p>
 <span id="cb14-10"><a href="#cb14-10" tabindex="-1" aria-label="code-block-14-10"></a><span class="bu">std::</span>set<span class="op">&lt;</span>podio<span class="op">::</span>ObjectID<span class="op">,</span> <span class="kw">decltype</span><span class="op">(</span>compare_object_ids<span class="op">)&gt;</span> used_electrons<span class="op">;</span></span>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1" aria-label="code-block-14-11"></a><span class="bu">std::</span>vector<span class="op">&lt;</span><span class="bu">std::</span>pair<span class="op">&lt;</span>edm4eic<span class="op">::</span>Track<span class="op">,</span> edm4eic<span class="op">::</span>Track<span class="op">&gt;&gt;</span> jpsi_candidates<span class="op">;</span></span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1" aria-label="code-block-14-12"></a></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1" aria-label="code-block-14-13"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> electron_1 <span class="op">:</span> rec_electrons<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1" aria-label="code-block-14-14"></a>  <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> electron_2 <span class="op">:</span> rec_electrons<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1" aria-label="code-block-14-15"></a>    <span class="cf">if</span> <span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">()</span> <span class="op">==</span> electron_2<span class="op">.</span>getObjectID<span class="op">())</span> <span class="op">{</span> <span class="co">// Don't try to combine things with themselves</span></span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1" aria-label="code-block-14-16"></a>      <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb14-17"><a href="#cb14-17" tabindex="-1" aria-label="code-block-14-17"></a>    <span class="op">}</span></span>
-<span id="cb14-18"><a href="#cb14-18" tabindex="-1" aria-label="code-block-14-18"></a>    <span class="cf">if</span> <span class="op">(</span>used_electrons<span class="op">.</span>contains<span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">()))</span> <span class="op">{</span> <span class="co">// If we've looked at our first electron, move on</span></span>
-<span id="cb14-19"><a href="#cb14-19" tabindex="-1" aria-label="code-block-14-19"></a>      <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb14-20"><a href="#cb14-20" tabindex="-1" aria-label="code-block-14-20"></a>    <span class="op">}</span></span>
-<span id="cb14-21"><a href="#cb14-21" tabindex="-1" aria-label="code-block-14-21"></a>    <span class="cf">if</span> <span class="op">(</span>used_electrons<span class="op">.</span>contains<span class="op">(</span>electron_2<span class="op">.</span>getObjectID<span class="op">()))</span> <span class="op">{</span> <span class="co">// If we've looked at our second electron, move on</span></span>
-<span id="cb14-22"><a href="#cb14-22" tabindex="-1" aria-label="code-block-14-22"></a>      <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb14-23"><a href="#cb14-23" tabindex="-1" aria-label="code-block-14-23"></a>    <span class="op">}</span></span>
-<span id="cb14-24"><a href="#cb14-24" tabindex="-1" aria-label="code-block-14-24"></a></span>
-<span id="cb14-25"><a href="#cb14-25" tabindex="-1" aria-label="code-block-14-25"></a>    <span class="at">const</span> <span class="kw">auto</span> lorentz_1 <span class="op">=</span> get_lorentz_track<span class="op">(</span>electron_1<span class="op">,</span> <span class="fl">0.000511</span><span class="op">);</span></span>
-<span id="cb14-26"><a href="#cb14-26" tabindex="-1" aria-label="code-block-14-26"></a>    <span class="at">const</span> <span class="kw">auto</span> lorentz_2 <span class="op">=</span> get_lorentz_track<span class="op">(</span>electron_1<span class="op">,</span> <span class="fl">0.000511</span><span class="op">);</span></span>
-<span id="cb14-27"><a href="#cb14-27" tabindex="-1" aria-label="code-block-14-27"></a></span>
-<span id="cb14-28"><a href="#cb14-28" tabindex="-1" aria-label="code-block-14-28"></a>    <span class="at">const</span> ROOT<span class="op">::</span>Math<span class="op">::</span>PxPyPzE4D total_mom<span class="op">(</span> <span class="co">// Sum up momentum components</span></span>
-<span id="cb14-29"><a href="#cb14-29" tabindex="-1" aria-label="code-block-14-29"></a>      lorentz_1<span class="op">.</span>Px<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Px<span class="op">(),</span></span>
-<span id="cb14-30"><a href="#cb14-30" tabindex="-1" aria-label="code-block-14-30"></a>      lorentz_1<span class="op">.</span>Py<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Py<span class="op">(),</span></span>
-<span id="cb14-31"><a href="#cb14-31" tabindex="-1" aria-label="code-block-14-31"></a>      lorentz_1<span class="op">.</span>Pz<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Pz<span class="op">(),</span></span>
-<span id="cb14-32"><a href="#cb14-32" tabindex="-1" aria-label="code-block-14-32"></a>      lorentz_1<span class="op">.</span>E<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>E<span class="op">()</span></span>
-<span id="cb14-33"><a href="#cb14-33" tabindex="-1" aria-label="code-block-14-33"></a>    <span class="op">);</span></span>
-<span id="cb14-34"><a href="#cb14-34" tabindex="-1" aria-label="code-block-14-34"></a>    <span class="at">const</span> <span class="dt">float</span> inv_mass <span class="op">=</span> total_mom<span class="op">.</span>M<span class="op">();</span> <span class="co">// Calculate the invariant mass</span></span>
-<span id="cb14-35"><a href="#cb14-35" tabindex="-1" aria-label="code-block-14-35"></a></span>
-<span id="cb14-36"><a href="#cb14-36" tabindex="-1" aria-label="code-block-14-36"></a>    <span class="cf">if</span> <span class="op">((</span>inv_mass <span class="op">&gt;</span> mass_min<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>inv_mass <span class="op">&lt;</span> mass_max<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb14-37"><a href="#cb14-37" tabindex="-1" aria-label="code-block-14-37"></a>      jpsi_candidates<span class="op">.</span>push_back<span class="op">(</span></span>
-<span id="cb14-38"><a href="#cb14-38" tabindex="-1" aria-label="code-block-14-38"></a>        <span class="op">{</span>electron_1<span class="op">,</span> electron_2<span class="op">}</span> <span class="co">// If invariant mass of pair is within window, add candidate electron tracks to our candidate vector</span></span>
-<span id="cb14-39"><a href="#cb14-39" tabindex="-1" aria-label="code-block-14-39"></a>      <span class="op">);</span></span>
-<span id="cb14-40"><a href="#cb14-40" tabindex="-1" aria-label="code-block-14-40"></a>    used_electrons<span class="op">.</span>insert<span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">());</span></span>
-<span id="cb14-41"><a href="#cb14-41" tabindex="-1" aria-label="code-block-14-41"></a>    used_electrons<span class="op">.</span>insert<span class="op">(</span>electron_2<span class="op">.</span>getObjectID<span class="op">());</span></span>
-<span id="cb14-42"><a href="#cb14-42" tabindex="-1" aria-label="code-block-14-42"></a>    <span class="op">}</span></span>
-<span id="cb14-43"><a href="#cb14-43" tabindex="-1" aria-label="code-block-14-43"></a>  <span class="op">}</span> <span class="co">// End loop over 2nd electron</span></span>
-<span id="cb14-44"><a href="#cb14-44" tabindex="-1" aria-label="code-block-14-44"></a><span class="op">}</span> <span class="co">// End loop over 1st electron</span></span></code></pre>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1" aria-label="code-block-14-13"></a><span class="co">// Check all of our reconstructed electron like objects and try to pair them together                           </span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1" aria-label="code-block-14-14"></a><span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> electron_1 <span class="op">:</span> rec_electrons<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1" aria-label="code-block-14-15"></a>  <span class="cf">for</span> <span class="op">(</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> electron_2 <span class="op">:</span> rec_electrons<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1" aria-label="code-block-14-16"></a>    <span class="cf">if</span> <span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">()</span> <span class="op">==</span> electron_2<span class="op">.</span>getObjectID<span class="op">())</span> <span class="op">{</span> <span class="co">// Don't try to combine things with themselves</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1" aria-label="code-block-14-17"></a>      <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1" aria-label="code-block-14-18"></a>    <span class="op">}</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1" aria-label="code-block-14-19"></a>    <span class="cf">if</span> <span class="op">(</span>used_electrons<span class="op">.</span>contains<span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">()))</span> <span class="op">{</span> <span class="co">// If we've looked at our first electron, move on</span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1" aria-label="code-block-14-20"></a>      <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1" aria-label="code-block-14-21"></a>    <span class="op">}</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1" aria-label="code-block-14-22"></a>    <span class="cf">if</span> <span class="op">(</span>used_electrons<span class="op">.</span>contains<span class="op">(</span>electron_2<span class="op">.</span>getObjectID<span class="op">()))</span> <span class="op">{</span> <span class="co">// If we've looked at our second electron, move on</span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1" aria-label="code-block-14-23"></a>      <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1" aria-label="code-block-14-24"></a>    <span class="op">}</span></span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1" aria-label="code-block-14-25"></a></span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1" aria-label="code-block-14-26"></a>    <span class="at">const</span> <span class="kw">auto</span> lorentz_1 <span class="op">=</span> get_lorentz_track<span class="op">(</span>electron_1<span class="op">,</span> <span class="fl">0.000511</span><span class="op">);</span></span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1" aria-label="code-block-14-27"></a>    <span class="at">const</span> <span class="kw">auto</span> lorentz_2 <span class="op">=</span> get_lorentz_track<span class="op">(</span>electron_1<span class="op">,</span> <span class="fl">0.000511</span><span class="op">);</span></span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1" aria-label="code-block-14-28"></a></span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1" aria-label="code-block-14-29"></a>    <span class="at">const</span> ROOT<span class="op">::</span>Math<span class="op">::</span>PxPyPzE4D total_mom<span class="op">(</span> <span class="co">// Sum up momentum components</span></span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1" aria-label="code-block-14-30"></a>      lorentz_1<span class="op">.</span>Px<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Px<span class="op">(),</span></span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1" aria-label="code-block-14-31"></a>      lorentz_1<span class="op">.</span>Py<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Py<span class="op">(),</span></span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1" aria-label="code-block-14-32"></a>      lorentz_1<span class="op">.</span>Pz<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>Pz<span class="op">(),</span></span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1" aria-label="code-block-14-33"></a>      lorentz_1<span class="op">.</span>E<span class="op">()</span> <span class="op">+</span> lorentz_2<span class="op">.</span>E<span class="op">()</span></span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1" aria-label="code-block-14-34"></a>    <span class="op">);</span></span>
+<span id="cb14-35"><a href="#cb14-35" tabindex="-1" aria-label="code-block-14-35"></a>    <span class="at">const</span> <span class="dt">float</span> inv_mass <span class="op">=</span> total_mom<span class="op">.</span>M<span class="op">();</span> <span class="co">// Calculate the invariant mass</span></span>
+<span id="cb14-36"><a href="#cb14-36" tabindex="-1" aria-label="code-block-14-36"></a></span>
+<span id="cb14-37"><a href="#cb14-37" tabindex="-1" aria-label="code-block-14-37"></a>    <span class="cf">if</span> <span class="op">((</span>inv_mass <span class="op">&gt;</span> mass_min<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>inv_mass <span class="op">&lt;</span> mass_max<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb14-38"><a href="#cb14-38" tabindex="-1" aria-label="code-block-14-38"></a>      jpsi_candidates<span class="op">.</span>push_back<span class="op">(</span></span>
+<span id="cb14-39"><a href="#cb14-39" tabindex="-1" aria-label="code-block-14-39"></a>        <span class="op">{</span>electron_1<span class="op">,</span> electron_2<span class="op">}</span> <span class="co">// If invariant mass of pair is within window, add candidate electron tracks to our candidate vector</span></span>
+<span id="cb14-40"><a href="#cb14-40" tabindex="-1" aria-label="code-block-14-40"></a>      <span class="op">);</span></span>
+<span id="cb14-41"><a href="#cb14-41" tabindex="-1" aria-label="code-block-14-41"></a>    used_electrons<span class="op">.</span>insert<span class="op">(</span>electron_1<span class="op">.</span>getObjectID<span class="op">());</span></span>
+<span id="cb14-42"><a href="#cb14-42" tabindex="-1" aria-label="code-block-14-42"></a>    used_electrons<span class="op">.</span>insert<span class="op">(</span>electron_2<span class="op">.</span>getObjectID<span class="op">());</span></span>
+<span id="cb14-43"><a href="#cb14-43" tabindex="-1" aria-label="code-block-14-43"></a>    <span class="op">}</span></span>
+<span id="cb14-44"><a href="#cb14-44" tabindex="-1" aria-label="code-block-14-44"></a>  <span class="op">}</span> <span class="co">// End loop over 2nd electron</span></span>
+<span id="cb14-45"><a href="#cb14-45" tabindex="-1" aria-label="code-block-14-45"></a><span class="op">}</span> <span class="co">// End loop over 1st electron</span></span></code></pre>
 </div>
+<p>Add this block within our event loop, but after our loop over all
+tracks.</p>
 <div id="challenge-plot-invariant-mass" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -997,8 +1000,8 @@ any links that you are not going to use.
   "url": "https://eic.github.io/eic_france_tutorial_2026/04-analysis.html",
   "identifier": "https://eic.github.io/eic_france_tutorial_2026/04-analysis.html",
   "dateCreated": "2026-11-04",
-  "dateModified": "2026-11-11",
-  "datePublished": "2026-11-11"
+  "dateModified": "2026-11-13",
+  "datePublished": "2026-11-13"
 }
 
   </script><script>
