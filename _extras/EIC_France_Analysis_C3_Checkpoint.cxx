@@ -88,7 +88,7 @@ void EIC_France_Analysis_C3_Checkpoint(
 
 	  const auto  daug_mom = convert_vector_double(MCparticle.getMomentum());
 	  const float daug_eta = daug_mom.Eta();
-	  const float daug_mag = std::sqrt(gaug_mom.Mag2());  // Mag() isn't implemented for XYZVector
+	  const float daug_mag = std::sqrt(daug_mom.Mag2());  // Mag() isn't implemented for XYZVector
 	  cout << daughter.getPDG() << "   " << daug_eta << endl;
 	}
       }
