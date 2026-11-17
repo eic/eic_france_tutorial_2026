@@ -578,7 +578,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-02-simulation"><p>Content from <a href="02-simulation.html">Simulating ePIC Events</a></p>
 <hr>
-<p>Last updated on 2026-11-06 |
+<p>Last updated on 2026-11-17 |
 
         <a href="https://github.com/eic/eic_france_tutorial_2026/edit/main/episodes/02-simulation.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 30 minutes</p>
@@ -749,7 +749,7 @@ earlier:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="ex">npsim</span> <span class="at">--compactFile</span> <span class="va">$DETECTOR_PATH</span>/epic_craterlake_9x130.xml <span class="at">--numberOfEvents</span> 10 <span class="at">--inputFiles</span> Input.hepmc <span class="at">--outputFile</span> Test_10_Events.edm4hep.root</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="ex">npsim</span> <span class="at">--compactFile</span> <span class="va">$DETECTOR_PATH</span>/epic_craterlake_10x100.xml <span class="at">--numberOfEvents</span> 10 <span class="at">--inputFiles</span> Input.hepmc <span class="at">--outputFile</span> Test_10_Events.edm4hep.root</span></code></pre>
 </div>
 <p>This should start running, there’ll be a large info dump to screen
 with various configuration info loading in. It should not take too long
@@ -769,7 +769,7 @@ look at the output we have so far.</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="ex">npsim</span> <span class="at">--compactFile</span> <span class="va">$DETECTOR_PATH</span>/epic_craterlake_9x130.xml <span class="at">--numberOfEvents</span> 1000 <span class="at">--inputFiles</span> Input.hepmc <span class="at">--outputFile</span> 1000_Events.edm4hep.root</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="ex">npsim</span> <span class="at">--compactFile</span> <span class="va">$DETECTOR_PATH</span>/epic_craterlake_10x100.xml <span class="at">--numberOfEvents</span> 1000 <span class="at">--inputFiles</span> Input.hepmc <span class="at">--outputFile</span> 1000_Events.edm4hep.root</span></code></pre>
 </div>
 </div>
 </div>
