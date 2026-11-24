@@ -108,6 +108,8 @@ If your file is **not** called `EIC_France_Analysis.cxx`, make sure you change t
 
 Equally, the input and output filenames are **hardcoded** in this script. Modify the input to match your input filename and name the output as you like.
 
+Change the input filename in the line `const std::string& in_file   = "1000_Events_Reco.root"`, switching `1000_Events_Reco.root` for your input file. **Keep in mind, that as provided, this is a relative path so make sure this file is wherever you're running this macro.**
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 As is, this won't really do anything yet except make a new file, `EIC_France_Analysis_Out.root`, which should be blank. **But**, we can check it runs via:
