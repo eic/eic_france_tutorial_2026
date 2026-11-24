@@ -58,7 +58,18 @@ Before we run anything, we'll make a directory to run in to keep things neat:
 mkdir EIC_France_Simulations && cd EIC_France_Simulations
 ```
 
-Copy your generated event file from earlier into this directory too. We're now ready to simulate! 
+Copy your generated event file from earlier into this directory too. We're now ready to simulate!
+
+
+::::::::::::::::::::::::::::::::::::: callout
+### File Namingg
+
+In the next section, we'll be running the simulation on our output file from earlier. The example commands assume this is just called `Input.hepmc`.
+
+If your file is named something else, either rename it or modify the commands below to point to the correct file.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ## Running Simulations
 
@@ -90,7 +101,7 @@ there's lots of options! We'll narrow down to a few:
   - The file path for the input `.hepmc` file (or files)
 - `--outputFile`
   - The file path to output to
-- `vX`
+- `-vX`
   - The verbosity level of the output to screen. X is a number between 1 and 7 corresponding to VERBOSE,DEBUG,INFO,WARNING,ERROR,FATAL,ALWAYS
   - E.g. `-v5` would select `ERROR` - We'll print errors.
  
