@@ -108,7 +108,7 @@ there's lots of options! We'll narrow down to a few:
 We will try running a short simulation on the events we generated earlier:
 
 ```bash
-npsim --compactFile $DETECTOR_PATH/epic_craterlake_10x100.xml --numberOfEvents 10 --inputFiles Input.hepmc --outputFile Test_10_Events.edm4hep.root
+npsim --compactFile $DETECTOR_PATH/epic_craterlake_9x130.xml --numberOfEvents 10 --inputFiles Input.hepmc --outputFile Test_10_Events.edm4hep.root
 ```
 
 This should start running, there'll be a large info dump to screen with various configuration info loading in. It should not take too long to process.
@@ -121,7 +121,7 @@ Once it's done, let's have a quick look at the file.
 For our next step, we'll want a larger file, I suggest opening a new terminal tab/window and running this simulation in the background as we look at the output we have so far.
 
 ```bash
-npsim --compactFile $DETECTOR_PATH/epic_craterlake_10x100.xml --numberOfEvents 1000 --inputFiles Input.hepmc --outputFile 1000_Events.edm4hep.root
+npsim --compactFile $DETECTOR_PATH/epic_craterlake_9x130.xml --numberOfEvents 1000 --inputFiles Input.hepmc --outputFile 1000_Events.edm4hep.root
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
