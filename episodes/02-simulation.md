@@ -62,7 +62,7 @@ Copy your generated event file from earlier into this directory too. We're now r
 
 
 ::::::::::::::::::::::::::::::::::::: callout
-### File Namingg
+### File Naming
 
 In the next section, we'll be running the simulation on our output file from earlier. The example commands assume this is just called `Input.hepmc`.
 
